@@ -1,10 +1,20 @@
-import { Button } from '@/components/ui/button';
-import FeaturedSection from '@/components/ui/FeaturedSection';
-import Footer from '@/components/ui/Footer';
-import { NavLink } from 'react-router-dom';
+import { Button } from '@/components/Shared/ui/button';
+import FeaturedSection from '@/components/Shared/ui/FeaturedSection';
+import Footer from '@/components/Shared/ui/Footer';
+import { useAuthPortals } from '@/hooks/useAuthPortals';
+import { useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 
 const Home = () => {
+  const { onOpenLogin } = useAuthPortals();
+  const location = useLocation();
+  const openLogin = location?.state?.openLogin;
+  useEffect(() => {
+    if (openLogin) {
+      onOpenLogin();
+    }
+  }, []);
   return (
     <section>
       <div className='homeBg relative'>

@@ -1,5 +1,5 @@
 import { Button } from './button';
-import logo from '../../assets/image.png';
+import logo from '../../../assets/image.png';
 import { useEffect, useState } from 'react';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { IoClose } from 'react-icons/io5';

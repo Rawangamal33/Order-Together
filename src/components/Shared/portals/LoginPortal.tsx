@@ -8,7 +8,7 @@ import ReactDom from 'react-dom';
 import { CgClose } from 'react-icons/cg';
 import { SiDoordash } from 'react-icons/si';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const LoginPortal = () => {
@@ -18,6 +18,8 @@ const LoginPortal = () => {
     email: '',
     password: '',
   });
+  const location = useLocation();
+  const from = location?.state?.from?.pathname;
   const [postLogin, { isLoading }] = usePostLoginMutation();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -26,6 +28,7 @@ const LoginPortal = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!formData.email || !formData.password) return;
@@ -41,7 +44,12 @@ const LoginPortal = () => {
         password: '',
       });
       onClose();
-      navigate('/');
+      const userRoles = response.user.role || [];
+      if (userRoles.includes('Admin')) {
+        navigate(from || '/admin', { replace: true });
+      } else if (userRoles.includes('User')) {
+        navigate(from || '/user', { replace: true });
+      }
     } catch (err: any) {
       if (!err?.data) {
         toast.error('No Server Response');
