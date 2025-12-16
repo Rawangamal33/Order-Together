@@ -2,6 +2,7 @@ import { api } from '@/services/api/api';
 import {
   type LoginRequest,
   type LoginResponse,
+  type LogoutRequest,
   type RegisterRequest,
 } from '@/types/auth.types';
 
@@ -21,7 +22,18 @@ export const authApi = api.injectEndpoints({
         body,
       }),
     }),
+    logout: builder.mutation<void, LogoutRequest>({
+      query: (body) => ({
+        url: 'auth/logout',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { usePostLoginMutation, usePostRegisterMutation } = authApi;
+export const {
+  usePostLoginMutation,
+  usePostRegisterMutation,
+  useLogoutMutation,
+} = authApi;

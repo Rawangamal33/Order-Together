@@ -1,6 +1,6 @@
 import type { RootState } from '@/app/store';
-import { setCredentials } from '@/features/auth/authSlice';
-import type { CredentialsType } from '@/types/auth.types';
+import { logoutRedux, setCredentials } from '@/features/auth/authSlice';
+import type { RefreshResponse } from '@/types/auth.types';
 import {
   fetchBaseQuery,
   type BaseQueryFn,
@@ -33,7 +33,16 @@ export const baseQueryWithReauth: BaseQueryFn<
     const id = (api.getState() as RootState).auth.user?.id;
     if (!refreshToken || !id) {
       toast.error('Session expired. Please login again.');
-      // logout redux state will be added later
+      api.dispatch(logoutRedux());
+      baseQuery(
+        {
+          url: '/auth/logout',
+          method: 'POST',
+          body: { userId: id, token: refreshToken },
+        },
+        api,
+        extraOptions
+      );
       return result;
     }
     const refreshResult = await baseQuery(
@@ -49,12 +58,30 @@ export const baseQueryWithReauth: BaseQueryFn<
       extraOptions
     );
     if (refreshResult?.data) {
-      const returnedResult = refreshResult?.data as CredentialsType;
-      api.dispatch(setCredentials(returnedResult));
+      const returnedResult = refreshResult?.data as RefreshResponse;
+      const currentUser = (api.getState() as RootState).auth.user;
+
+      api.dispatch(
+        setCredentials({
+          accessToken: returnedResult?.accessToken,
+          refreshToken: returnedResult?.refreshToken,
+          user: currentUser,
+        })
+      );
+
       result = await baseQuery(args, api, extraOptions);
     } else {
       toast.error('Session expired. Please login again.');
-      // logout redux state will be added later
+      api.dispatch(logoutRedux());
+      baseQuery(
+        {
+          url: '/auth/logout',
+          method: 'POST',
+          body: { userId: id, token: refreshToken },
+        },
+        api,
+        extraOptions
+      );
     }
   }
   return result;

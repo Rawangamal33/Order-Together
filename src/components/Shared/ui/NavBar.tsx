@@ -5,11 +5,15 @@ import { BiMenuAltRight } from 'react-icons/bi';
 import { IoClose } from 'react-icons/io5';
 import { NavLink } from 'react-router-dom';
 import { useAuthPortals } from '@/hooks/useAuthPortals';
+import useAuth from '@/hooks/useAuth';
+import useLogout from '@/hooks/useLogout';
 
 const NavBar = () => {
   const { onOpenLogin, onOpenRegister } = useAuthPortals();
   const [isScrolled, setIsScrolled] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
+  const { accessToken } = useAuth();
+  const { logout, isLoading } = useLogout();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,20 +75,36 @@ const NavBar = () => {
         </div>
 
         <div className='flex-1 hidden lg:flex justify-end gap-3'>
-          <Button
-            variant='outline'
-            className='text-white font-semibold border-[#D83427] bg-red-600'
-            onClick={() => onOpenLogin()}
-          >
-            Login{' '}
-          </Button>
-          <Button
-            variant='outline'
-            className='bg-white text-gray-600 font-semibold'
-            onClick={() => onOpenRegister()}
-          >
-            Sign Up
-          </Button>
+          {!accessToken && (
+            <>
+              <Button
+                variant='outline'
+                className='text-white font-semibold border-[#D83427] bg-red-600'
+                onClick={() => onOpenLogin()}
+              >
+                Login
+              </Button>
+              <Button
+                variant='outline'
+                className='bg-white text-gray-600 font-semibold'
+                onClick={() => onOpenRegister()}
+              >
+                Sign Up
+              </Button>
+            </>
+          )}
+          {accessToken && (
+            <Button
+              variant='outline'
+              disabled={isLoading}
+              className={` bg-white text-gray-600 font-semibold ${
+                isLoading ? 'cursor-not-allowed opacity-75' : ''
+              }`}
+              onClick={logout}
+            >
+              {isLoading ? 'Logging out..' : ' Log out'}
+            </Button>
+          )}
         </div>
       </nav>
 

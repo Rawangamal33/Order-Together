@@ -28,3 +28,15 @@ export interface RegisterRequest {
   email: string;
   password: string;
 }
+
+export interface RefreshResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface RefreshRequest {
+  userId: string;
+  token: string;
+}
+
+export interface LogoutRequest extends RefreshRequest {}

@@ -23,8 +23,20 @@ export const authSlice = createSlice({
         (state.refreshToken = action.payload.refreshToken),
         (state.user = action.payload.user);
     },
+    logoutRedux: (state) => {
+      (state.accessToken = null),
+        (state.refreshToken = null),
+        (state.user = {
+          id: null,
+          firstName: null,
+          lastName: null,
+          email: null,
+          avatrUrl: null,
+          role: [],
+        });
+    },
   },
 });
 
-export const { setCredentials } = authSlice.actions;
+export const { setCredentials, logoutRedux } = authSlice.actions;
 export default authSlice.reducer;
