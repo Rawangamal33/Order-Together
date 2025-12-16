@@ -1,6 +1,6 @@
 import ReactDom from 'react-dom';
 import { CgClose } from 'react-icons/cg';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,6 +8,8 @@ import { SiDoordash } from 'react-icons/si';
 import { useAuthPortals } from '@/hooks/useAuthPortals';
 import { usePostRegisterMutation } from '@/features/auth/authApi';
 import { toast } from 'react-toastify';
+import { FaEyeSlash } from 'react-icons/fa';
+import { IoMdEye } from 'react-icons/io';
 
 const RegisterPortal = () => {
   const registerPortal = document.getElementById('registerPortal');
@@ -15,6 +17,7 @@ const RegisterPortal = () => {
 
   const [postRegister, { isLoading }] = usePostRegisterMutation();
   const { onOpenLogin, onClose } = useAuthPortals();
+  const [showPass, setShowPass] = useState(false);
 
   const nameSchema = z
     .string()
@@ -84,6 +87,9 @@ const RegisterPortal = () => {
         toast.error('Registration Failed. Please try again.');
       }
     }
+  };
+  const togglePassVisibility = () => {
+    setShowPass((prev) => !prev);
   };
 
   return ReactDom.createPortal(
@@ -173,15 +179,32 @@ const RegisterPortal = () => {
           <label htmlFor='password' className='labelStyles mt-3 '>
             Password:
           </label>
-          <input
-            type='password'
-            id='password'
-            {...register('password')}
-            required
-            autoComplete='new-password'
-            placeholder='Enter your password'
-            className='inputStyles'
-          />
+          <div className='flex items-center'>
+            <input
+              type={`${showPass ? 'text' : 'password'}`}
+              id='password'
+              {...register('password')}
+              required
+              autoComplete='new-password'
+              placeholder='Enter your password'
+              className='inputStyles'
+            />
+            {showPass ? (
+              <div
+                className='-ml-8 cursor-pointer text-gray-600'
+                onClick={togglePassVisibility}
+              >
+                <IoMdEye />
+              </div>
+            ) : (
+              <div
+                className='-ml-8 cursor-pointer text-gray-600'
+                onClick={togglePassVisibility}
+              >
+                <FaEyeSlash />
+              </div>
+            )}
+          </div>
           {errors.password && (
             <span className='text-secondRedColor'>
               {errors.password.message}

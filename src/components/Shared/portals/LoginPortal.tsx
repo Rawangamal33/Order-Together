@@ -10,6 +10,8 @@ import { SiDoordash } from 'react-icons/si';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { FaEyeSlash } from 'react-icons/fa';
+import { IoMdEye } from 'react-icons/io';
 
 const LoginPortal = () => {
   const loginPortal = document.getElementById('loginPortal');
@@ -24,6 +26,7 @@ const LoginPortal = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { onOpenRegister, onOpenForgotPass, onClose } = useAuthPortals();
+  const [showPass, setShowPass] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -62,6 +65,11 @@ const LoginPortal = () => {
       }
     }
   };
+
+  const togglePassVisibility = () => {
+    setShowPass((prev) => !prev);
+  };
+
   return ReactDom.createPortal(
     <section className='flex-center'>
       <div
@@ -107,17 +115,34 @@ const LoginPortal = () => {
           <label htmlFor='password' className='labelStyles mt-3'>
             Password:
           </label>
-          <input
-            type='password'
-            id='password'
-            name='password'
-            value={formData.password}
-            onChange={handleChange}
-            required
-            autoComplete='current-password'
-            placeholder='Enter your password'
-            className='inputStyles'
-          />
+          <div className='flex items-center'>
+            <input
+              type={`${showPass ? 'text' : 'password'}`}
+              id='password'
+              name='password'
+              value={formData.password}
+              onChange={handleChange}
+              required
+              autoComplete='current-password'
+              placeholder='Enter your password'
+              className='inputStyles'
+            />
+            {showPass ? (
+              <div
+                className='-ml-8 cursor-pointer text-gray-600'
+                onClick={togglePassVisibility}
+              >
+                <IoMdEye />
+              </div>
+            ) : (
+              <div
+                className='-ml-8 cursor-pointer text-gray-600'
+                onClick={togglePassVisibility}
+              >
+                <FaEyeSlash />
+              </div>
+            )}
+          </div>
           <div className='flex justify-between items-cente sm:text-sm text-[12px] text-gray-500 mt-1'>
             <div className='flex gap-1'>
               <input type='checkbox' id='persist' className='accent-blue-600' />
