@@ -8,6 +8,7 @@ import UserPage from '@/pages/User/UserPage';
 import { AnimatePresence } from 'framer-motion';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import ProtectedRoutes from './ProtectedRoutes';
+import NotFound from '@/pages/NotFound';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -75,6 +76,7 @@ const AppRoutes = () => {
               }
             />
           </Route>
+          <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>
     </AnimatePresence>

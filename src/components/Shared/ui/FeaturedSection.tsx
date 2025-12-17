@@ -15,8 +15,8 @@ const FeaturedSection = () => {
     {
       id: 2,
       icon: <FaLink />,
-      headText: 'Share the Link',
-      text: 'Send a unique link or code to friends. They join and add their own items to the cart.',
+      headText: 'Share the Code',
+      text: 'Send unique code to friends. They join and add their own items to the cart.',
     },
     {
       id: 3,

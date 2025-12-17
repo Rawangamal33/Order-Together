@@ -2,13 +2,13 @@ import { Button } from '@/components/Shared/ui/button';
 import { useState } from 'react';
 
 const UpdateProfile = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | undefined>(undefined);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setSelectedFile(file);
+      // setSelectedFile(file);
       setPreview(URL.createObjectURL(file));
     }
   };

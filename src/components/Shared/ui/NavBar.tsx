@@ -7,12 +7,18 @@ import { NavLink } from 'react-router-dom';
 import { useAuthPortals } from '@/hooks/useAuthPortals';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
+import { MdLogin } from 'react-icons/md';
+import { SiDoordash } from 'react-icons/si';
+import { FaUserPlus } from 'react-icons/fa';
+import { FaUserCircle } from 'react-icons/fa';
+import { MdDashboard } from 'react-icons/md';
 
 const NavBar = () => {
   const { onOpenLogin, onOpenRegister } = useAuthPortals();
   const [isScrolled, setIsScrolled] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
-  const { accessToken } = useAuth();
+  const { accessToken, user } = useAuth();
+  const roles = user?.role;
   const { logout, isLoading } = useLogout();
 
   useEffect(() => {
@@ -74,7 +80,7 @@ const NavBar = () => {
           </button>
         </div>
 
-        <div className='flex-1 hidden lg:flex justify-end gap-3'>
+        <div className='flex-1 hidden lg:flex items-center justify-end gap-3'>
           {!accessToken && (
             <>
               <Button
@@ -94,16 +100,36 @@ const NavBar = () => {
             </>
           )}
           {accessToken && (
-            <Button
-              variant='outline'
-              disabled={isLoading}
-              className={` bg-white text-gray-600 font-semibold ${
-                isLoading ? 'cursor-not-allowed opacity-75' : ''
-              }`}
-              onClick={logout}
-            >
-              {isLoading ? 'Logging out..' : ' Log out'}
-            </Button>
+            <>
+              <NavLink
+                to='/profile'
+                className={`text-[22px] mr-3 cursor-pointer
+                ${isScrolled ? 'text-orangeColor' : 'text-amber-50'}`}
+              >
+                <FaUserCircle />
+              </NavLink>
+
+              <NavLink
+                to={roles?.includes('Admin') ? '/admin' : '/user'}
+                className={({ isActive }) => `mr-3 hover:underline ${
+                  isActive ? 'underline' : ''
+                }
+                ${isScrolled ? 'text-black' : 'text-white '}`}
+              >
+                Dashboard
+              </NavLink>
+
+              <Button
+                variant='outline'
+                disabled={isLoading}
+                className={` bg-white text-gray-600 shadow-md font-semibold ${
+                  isLoading ? 'cursor-not-allowed opacity-75' : ''
+                }`}
+                onClick={logout}
+              >
+                {isLoading ? 'Logging out..' : ' Log out'}
+              </Button>
+            </>
           )}
         </div>
       </nav>
@@ -125,37 +151,114 @@ const NavBar = () => {
             <span className='text-xl font-bold text-gray-800'>Menu</span>
             <button
               onClick={closeSidebar}
-              className='text-3xl cursor-pointer text-gray-600 hover:text-gray-800'
+              className='text-2xl cursor-pointer text-gray-600 hover:text-gray-800'
               aria-label='Close menu'
             >
               <IoClose />
             </button>
           </div>
 
-          <div className='flex flex-col gap-4 p-5'>
-            <Button
-              variant='outline'
-              className='w-full text-white font-semibold border-[#D83427] bg-red-600'
-              onClick={() => {
-                onOpenLogin();
-                closeSidebar();
-              }}
-            >
-              Login
-            </Button>
-            <Button
-              variant='outline'
-              className='w-full bg-white text-gray-600 font-semibold'
-              onClick={() => {
-                onOpenRegister();
-                closeSidebar();
-              }}
-            >
-              Sign Up
-            </Button>
+          <div className='flex flex-col pb-3 pt-2 px-1.5'>
+            {!accessToken && (
+              <>
+                <div
+                  className='border-b flex items-center text-left justify-start hover:bg-[#F6F6F6] cursor-pointer'
+                  onClick={() => {
+                    onOpenLogin();
+                    closeSidebar();
+                  }}
+                >
+                  <div className='text-lg ml-4 text-red-600'>
+                    <SiDoordash />
+                  </div>
+                  <Button
+                    variant='ghost'
+                    className='w-full py-6 hover:bg-none font-semibold text-gray-700 border-none text-left text-base justify-start'
+                  >
+                    Login
+                  </Button>
+                </div>
+                <div
+                  className='border-b flex items-center text-left justify-start hover:bg-[#F6F6F6] cursor-pointer'
+                  onClick={() => {
+                    onOpenRegister();
+                    closeSidebar();
+                  }}
+                >
+                  <div className='text-lg ml-4'>
+                    <FaUserPlus />
+                  </div>
+                  <Button
+                    variant='ghost'
+                    className='w-full py-6 hover:bg-none font-semibold text-gray-700 border-none text-left text-base justify-start'
+                  >
+                    Sign Up
+                  </Button>
+                </div>
+              </>
+            )}
+            {accessToken && (
+              <>
+                <NavLink
+                  to={roles?.includes('Admin') ? '/admin' : '/user'}
+                  className={({ isActive }) =>
+                    `border-b flex items-center text-left justify-start hover:bg-[#F6F6F6] cursor-pointer ${
+                      isActive ? 'underline' : ''
+                    }`
+                  }
+                >
+                  <div className='text-lg ml-4 text-secondRedColor'>
+                    <MdDashboard />
+                  </div>
+                  <Button
+                    variant='ghost'
+                    className='w-full py-6 hover:bg-none font-semibold text-gray-700 border-none text-left text-base justify-start'
+                  >
+                    Dashboard
+                  </Button>
+                </NavLink>
+
+                <NavLink
+                  to='/profile'
+                  className={({ isActive }) =>
+                    `border-b flex items-center text-left justify-start hover:bg-[#F6F6F6] cursor-pointer ${
+                      isActive ? 'underline' : ''
+                    }`
+                  }
+                >
+                  <div className='text-lg ml-4 text-secondRedColor'>
+                    <FaUserCircle />
+                  </div>
+                  <Button
+                    variant='ghost'
+                    className='w-full py-6 hover:bg-none font-semibold text-gray-700 border-none text-left text-base justify-start'
+                  >
+                    Profile Settings
+                  </Button>
+                </NavLink>
+
+                <div
+                  className='border-b flex items-center text-left justify-start hover:bg-[#F6F6F6] cursor-pointer'
+                  onClick={logout}
+                >
+                  <div className='text-lg ml-4'>
+                    <MdLogin />
+                  </div>
+                  <Button
+                    variant='ghost'
+                    disabled={isLoading}
+                    className={`w-full py-6 hover:bg-none font-semibold text-gray-700 border-none text-left text-base justify-start ${
+                      isLoading ? 'cursor-not-allowed opacity-75' : ''
+                    }`}
+                  >
+                    {isLoading ? 'Logging out..' : ' Log out'}
+                  </Button>
+                </div>
+              </>
+            )}
 
             {/* Add*/}
-            <div className='mt-4 pt-4 border-t'>{/*  */}</div>
+            <div>{/* */}</div>
           </div>
         </div>
       </aside>

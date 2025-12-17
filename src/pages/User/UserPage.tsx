@@ -1,5 +1,3 @@
-import { NavLink } from 'react-router-dom';
-
 const UserPage = () => {
   return (
     <div className='pt-20'>
