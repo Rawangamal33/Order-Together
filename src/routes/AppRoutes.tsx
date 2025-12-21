@@ -1,14 +1,14 @@
 import AnimationRouting from '@/animation/AnimationRouting';
 import MainLayout from '@/components/Shared/layouts/MainLayout';
-import AdminPage from '@/pages/Admin/AdminPage';
 import Home from '@/pages/Home';
 import Unauthorized from '@/pages/Unauthorized';
 import UpdateProfile from '@/pages/UpdateProfile';
-import UserPage from '@/pages/User/UserPage';
 import { AnimatePresence } from 'framer-motion';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import ProtectedRoutes from './ProtectedRoutes';
 import NotFound from '@/pages/NotFound';
+import Dashboard from '@/pages/Admin/Dashboard';
+import UserDashboard from '@/pages/User/UserDashboard';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -54,10 +54,10 @@ const AppRoutes = () => {
           </Route>
           <Route element={<ProtectedRoutes allowedRoles={[ROLES.ADMIN]} />}>
             <Route
-              path='admin'
+              path='admin/restaurants'
               element={
                 <AnimationRouting>
-                  <AdminPage />
+                  <Dashboard />
                 </AnimationRouting>
               }
             />
@@ -71,7 +71,7 @@ const AppRoutes = () => {
               path='user'
               element={
                 <AnimationRouting>
-                  <UserPage />
+                  <UserDashboard />
                 </AnimationRouting>
               }
             />

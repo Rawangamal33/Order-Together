@@ -49,7 +49,7 @@ const LoginPortal = () => {
       onClose();
       const userRoles = response.user.role || [];
       if (userRoles.includes('Admin')) {
-        navigate(from || '/admin', { replace: true });
+        navigate(from || '/admin/restaurants', { replace: true });
       } else if (userRoles.includes('User')) {
         navigate(from || '/user', { replace: true });
       }

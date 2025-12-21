@@ -110,7 +110,7 @@ const NavBar = () => {
               </NavLink>
 
               <NavLink
-                to={roles?.includes('Admin') ? '/admin' : '/user'}
+                to={roles?.includes('Admin') ? '/admin/restaurants' : '/user'}
                 className={({ isActive }) => `mr-3 hover:underline ${
                   isActive ? 'underline' : ''
                 }
@@ -200,7 +200,7 @@ const NavBar = () => {
             {accessToken && (
               <>
                 <NavLink
-                  to={roles?.includes('Admin') ? '/admin' : '/user'}
+                  to={roles?.includes('Admin') ? '/admin/restaurants' : '/user'}
                   className={({ isActive }) =>
                     `border-b flex items-center text-left justify-start hover:bg-[#F6F6F6] cursor-pointer ${
                       isActive ? 'underline' : ''
