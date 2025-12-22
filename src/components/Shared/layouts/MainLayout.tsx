@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom';
 import NavBar from '../ui/NavBar';
-import LoginPortal from '../portals/LoginPortal';
-import RegisterPortal from '../portals/RegisterPortal';
 import ForgotPassword from '../portals/ForgotPassword';
-import { useAuthPortals } from '@/hooks/useAuthPortals';
+import { usePortals } from '@/hooks/usePortals';
+import LoginPage from '../portals/LoginPage';
+import RegisterPage from '../portals/RegisterPage';
 
 const MainLayout = () => {
-  const { activePortal } = useAuthPortals();
+  const { activePortal } = usePortals();
 
   return (
     <div className='relative min-h-screen'>
@@ -15,8 +15,8 @@ const MainLayout = () => {
       </div>
       <Outlet />
 
-      {activePortal === 'login' && <LoginPortal />}
-      {activePortal === 'register' && <RegisterPortal />}
+      {activePortal === 'login' && <LoginPage />}
+      {activePortal === 'register' && <RegisterPage />}
       {activePortal === 'forgotPass' && <ForgotPassword />}
     </div>
   );

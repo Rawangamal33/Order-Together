@@ -1,14 +1,11 @@
-import { useAuthPortals } from '@/hooks/useAuthPortals';
-import ReactDom from 'react-dom';
+import { usePortals } from '@/hooks/usePortals';
 import { CgClose } from 'react-icons/cg';
 import { SiDoordash } from 'react-icons/si';
 
 const ForgotPassword = () => {
-  const { onClose } = useAuthPortals();
+  const { onClose } = usePortals();
 
-  const forgotPassPortal = document.getElementById('forgotPassPortal');
-  if (!forgotPassPortal) return null;
-  return ReactDom.createPortal(
+  return (
     <section className='flex-center'>
       <div
         className='fixed inset-0 bg-black/50 z-100'
@@ -61,8 +58,7 @@ const ForgotPassword = () => {
           </button>
         </form>
       </div>
-    </section>,
-    forgotPassPortal
+    </section>
   );
 };
 

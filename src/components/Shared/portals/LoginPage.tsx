@@ -1,10 +1,8 @@
 import type { AppDispatch } from '@/app/store';
 import { usePostLoginMutation } from '@/features/auth/authApi';
 import { setCredentials } from '@/features/auth/authSlice';
-import { useAuthPortals } from '@/hooks/useAuthPortals';
 import type { LoginRequest } from '@/types/auth.types';
 import { useState } from 'react';
-import ReactDom from 'react-dom';
 import { CgClose } from 'react-icons/cg';
 import { SiDoordash } from 'react-icons/si';
 import { useDispatch } from 'react-redux';
@@ -12,10 +10,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaEyeSlash } from 'react-icons/fa';
 import { IoMdEye } from 'react-icons/io';
+import { usePortals } from '@/hooks/usePortals';
 
-const LoginPortal = () => {
-  const loginPortal = document.getElementById('loginPortal');
-  if (!loginPortal) return null;
+const LoginPage = () => {
   const [formData, setFormData] = useState<LoginRequest>({
     email: '',
     password: '',
@@ -25,7 +22,8 @@ const LoginPortal = () => {
   const [postLogin, { isLoading }] = usePostLoginMutation();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { onOpenRegister, onOpenForgotPass, onClose } = useAuthPortals();
+  const { onOpenRegister, onOpenForgotPass, onClose } = usePortals();
+
   const [showPass, setShowPass] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +68,7 @@ const LoginPortal = () => {
     setShowPass((prev) => !prev);
   };
 
-  return ReactDom.createPortal(
+  return (
     <section className='flex-center'>
       <div
         className='fixed inset-0 bg-black/50 z-100'
@@ -177,9 +175,8 @@ const LoginPortal = () => {
           </button>
         </div>
       </div>
-    </section>,
-    loginPortal
+    </section>
   );
 };
 
-export default LoginPortal;
+export default LoginPage;

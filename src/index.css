@@ -45,6 +45,26 @@
   @apply text-[#9ca3af] hover:text-[#6b7280] hover:bg-[#f3f4f6];
 }
 
+@utility statusBase {
+  @apply inline-flex py-1 px-2.5 text-[12px] font-semibold rounded-[9999px] border;
+}
+
+@utility statusVisible {
+  @apply bg-[#2883de14] text-[#1976d2] border-[#1976d214];
+}
+
+@utility statusHidden {
+  @apply bg-[#e5e7eb] text-[#4b5563] border-[#d1d5db];
+}
+
+@utility eyeVisibility {
+  @apply text-[#1976d2] hover:text-[#196cc0] hover:bg-[#48baee14];
+}
+
+@utility eyeUnVisibility {
+  @apply text-[#9ca3af] hover:text-[#6b7280] hover:bg-[#f3f4f6];
+}
+
 body {
   font-family: 'Nunito', sans-serif;
 }

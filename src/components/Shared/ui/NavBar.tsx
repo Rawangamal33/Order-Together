@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { IoClose } from 'react-icons/io5';
 import { NavLink } from 'react-router-dom';
-import { useAuthPortals } from '@/hooks/useAuthPortals';
 import useAuth from '@/hooks/useAuth';
 import useLogout from '@/hooks/useLogout';
 import { MdLogin } from 'react-icons/md';
@@ -12,9 +11,10 @@ import { SiDoordash } from 'react-icons/si';
 import { FaUserPlus } from 'react-icons/fa';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdDashboard } from 'react-icons/md';
+import { usePortals } from '@/hooks/usePortals';
 
 const NavBar = () => {
-  const { onOpenLogin, onOpenRegister } = useAuthPortals();
+  const { onOpenLogin, onOpenRegister } = usePortals();
   const [isScrolled, setIsScrolled] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
   const { accessToken, user } = useAuth();

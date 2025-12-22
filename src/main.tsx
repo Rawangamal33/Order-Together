@@ -3,14 +3,14 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
 import { BrowserRouter } from 'react-router-dom';
-import AuthPortalsProvider from './context/AuthPortalsProvider.tsx';
 import { Provider } from 'react-redux';
 import { Bounce, ToastContainer } from 'react-toastify';
 import { store } from './app/store.ts';
+import PortalsProvider from './context/PortalsProvider.tsx';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthPortalsProvider>
+      <PortalsProvider>
         <Provider store={store}>
           <App />
           <ToastContainer
@@ -27,7 +27,7 @@ createRoot(document.getElementById('root')!).render(
             transition={Bounce}
           />
         </Provider>
-      </AuthPortalsProvider>
+      </PortalsProvider>
     </BrowserRouter>
   </StrictMode>
 );

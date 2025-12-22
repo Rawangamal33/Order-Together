@@ -6,7 +6,7 @@ import {
   type SetStateAction,
 } from 'react';
 
-export interface AuthPortalsContextValueProps {
+export interface PortalsContextValueProps {
   activePortal: string | null;
   setActivePortal: Dispatch<SetStateAction<string | null>>;
   onOpenLogin: () => void;
@@ -14,17 +14,17 @@ export interface AuthPortalsContextValueProps {
   onOpenForgotPass: () => void;
   onClose: () => void;
 }
-export const AuthPortalsContext = createContext<
-  AuthPortalsContextValueProps | undefined
+export const PortalsContext = createContext<
+  PortalsContextValueProps | undefined
 >(undefined);
-const AuthPortalsProvider = ({ children }: { children: ReactNode }) => {
+const PortalsProvider = ({ children }: { children: ReactNode }) => {
   const [activePortal, setActivePortal] = useState<string | null>(null);
   const onOpenLogin = () => setActivePortal('login');
   const onOpenRegister = () => setActivePortal('register');
   const onOpenForgotPass = () => setActivePortal('forgotPass');
   const onClose = () => setActivePortal(null);
   return (
-    <AuthPortalsContext.Provider
+    <PortalsContext.Provider
       value={{
         activePortal,
         setActivePortal,
@@ -35,8 +35,8 @@ const AuthPortalsProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </AuthPortalsContext.Provider>
+    </PortalsContext.Provider>
   );
 };
 
-export default AuthPortalsProvider;
+export default PortalsProvider;
