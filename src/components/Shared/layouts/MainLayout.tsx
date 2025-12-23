@@ -4,6 +4,7 @@ import ForgotPassword from '../portals/ForgotPassword';
 import { usePortals } from '@/hooks/usePortals';
 import LoginPage from '../portals/LoginPage';
 import RegisterPage from '../portals/RegisterPage';
+import CreateRestaurant from '../portals/CreateRestaurant';
 
 const MainLayout = () => {
   const { activePortal } = usePortals();
@@ -14,10 +15,10 @@ const MainLayout = () => {
         <NavBar />
       </div>
       <Outlet />
-
       {activePortal === 'login' && <LoginPage />}
       {activePortal === 'register' && <RegisterPage />}
       {activePortal === 'forgotPass' && <ForgotPassword />}
+      {activePortal === 'createRestaurant' && <CreateRestaurant />}
     </div>
   );
 };

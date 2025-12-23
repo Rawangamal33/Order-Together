@@ -12,6 +12,7 @@ export interface PortalsContextValueProps {
   onOpenLogin: () => void;
   onOpenRegister: () => void;
   onOpenForgotPass: () => void;
+  onOpenCreateRestaurant: () => void;
   onClose: () => void;
 }
 export const PortalsContext = createContext<
@@ -22,6 +23,7 @@ const PortalsProvider = ({ children }: { children: ReactNode }) => {
   const onOpenLogin = () => setActivePortal('login');
   const onOpenRegister = () => setActivePortal('register');
   const onOpenForgotPass = () => setActivePortal('forgotPass');
+  const onOpenCreateRestaurant = () => setActivePortal('createRestaurant');
   const onClose = () => setActivePortal(null);
   return (
     <PortalsContext.Provider
@@ -31,6 +33,7 @@ const PortalsProvider = ({ children }: { children: ReactNode }) => {
         onOpenLogin,
         onOpenRegister,
         onOpenForgotPass,
+        onOpenCreateRestaurant,
         onClose,
       }}
     >
