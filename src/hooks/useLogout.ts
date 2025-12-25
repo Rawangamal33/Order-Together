@@ -19,14 +19,11 @@ const useLogout = () => {
       }
       dispatch(logoutRedux());
       toast.success("Logged out successfully'.");
-      navigate('/', {
+      navigate('/login', {
         replace: true,
-        state: {
-          openLogin: true,
-        },
       });
     } catch (err) {
-      console.log(err);
+      toast.error('Logout failed. Please try again.');
     }
   };
   return { logout, isLoading };

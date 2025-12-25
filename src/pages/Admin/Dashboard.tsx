@@ -1,6 +1,9 @@
 import RestaurantActions from '@/components/Admin/RestaurantActions';
 import RestaurantsTable from '@/components/Admin/RestaurantsTable';
+import DialogTrigger from '@/components/Shared/Dialog/DialogTrigger';
+import CreateRestaurant from '@/components/Shared/portals/CreateRestaurant';
 import { Button } from '@/components/Shared/ui/button';
+import { WithDialogContext } from '@/context/DialogProvider';
 import type { Restaurant } from '@/types/restaurants.types';
 import { FaPlus } from 'react-icons/fa6';
 
@@ -17,14 +20,27 @@ const Dashboard = () => {
               Manage visibility and profiles.
             </p>
           </div>
-          <Button variant='outline' className='text-gray-700 py-5 shadow-sm'>
-            <div>
-              <FaPlus />
-            </div>
-            <span className='font-sans md:text-[15px] text-[13px]'>
-              Add New Restaurant
-            </span>
-          </Button>
+          <DialogTrigger
+            trigger={
+              <Button
+                variant='outline'
+                className='text-gray-700 py-5 shadow-sm'
+              >
+                <div>
+                  <FaPlus />
+                </div>
+                <span className='font-sans md:text-[15px] text-[13px]'>
+                  Add New Restaurant
+                </span>
+              </Button>
+            }
+            ariaLabel='Add Restaurant Dialog'
+            title='Create New Restaurant'
+            showCloseIcon={true}
+            maxWidth='sm'
+          >
+            <CreateRestaurant />
+          </DialogTrigger>
         </div>
         <RestaurantsTable
           renderControls={(row: Restaurant) => (
@@ -36,4 +52,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default WithDialogContext(Dashboard);

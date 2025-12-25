@@ -4,6 +4,8 @@ import type { Restaurant } from '@/types/restaurants.types';
 import GlobalTable from '../Shared/ui/GlobalTable';
 import RestaurantName from './RestaurantName';
 import type { ReactNode } from 'react';
+import DialogTrigger from '../Shared/Dialog/DialogTrigger';
+import CreateRestaurant from '../Shared/portals/CreateRestaurant';
 
 export interface RestauranrTableProps {
   renderControls: (row: Restaurant) => ReactNode;
@@ -69,11 +71,21 @@ const RestaurantsTable = ({ renderControls }: RestauranrTableProps) => {
       </p>
 
       <div className='mb-5'>
-        <button className='flex-center gap-2 mx-auto mt-4 shadow-md py-2 px-4 border border-gray-300 hover:bg-gray-100 rounded-md'>
-          <span className='font-sans text-gray-600 font-semibold'>
-            Add new Restaurant
-          </span>
-        </button>
+        <DialogTrigger
+          trigger={
+            <button className='flex-center gap-2 mx-auto mt-4 shadow-md py-2 px-4 border border-gray-300 hover:bg-gray-100 rounded-md'>
+              <span className='font-sans text-gray-600 font-semibold'>
+                Add new Restaurant
+              </span>
+            </button>
+          }
+          ariaLabel='Add Restaurant Dialog'
+          title='Create New Restaurant'
+          showCloseIcon={true}
+          maxWidth='sm'
+        >
+          <CreateRestaurant />
+        </DialogTrigger>
       </div>
     </>
   );

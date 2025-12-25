@@ -9,6 +9,8 @@ import ProtectedRoutes from './ProtectedRoutes';
 import NotFound from '@/pages/NotFound';
 import Dashboard from '@/pages/Admin/Dashboard';
 import UserDashboard from '@/pages/User/UserDashboard';
+import Login from '@/pages/Login';
+import Register from '@/pages/Register';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -20,12 +22,27 @@ const AppRoutes = () => {
     <AnimatePresence mode='wait'>
       <Routes location={location} key={location.pathname}>
         <Route path='/' element={<MainLayout />}>
-          {/* Public Routes */}
           <Route
             index
             element={
               <AnimationRouting>
                 <Home />
+              </AnimationRouting>
+            }
+          />
+          <Route
+            path='/login'
+            element={
+              <AnimationRouting>
+                <Login />
+              </AnimationRouting>
+            }
+          />
+          <Route
+            path='/register'
+            element={
+              <AnimationRouting>
+                <Register />
               </AnimationRouting>
             }
           />
@@ -37,7 +54,6 @@ const AppRoutes = () => {
               </AnimationRouting>
             }
           />
-          {/* Protected Routes */}
           <Route
             element={
               <ProtectedRoutes allowedRoles={[ROLES.ADMIN, ROLES.USER]} />

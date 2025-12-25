@@ -11,9 +11,7 @@ const ProtectedRoutes = ({ allowedRoles }: { allowedRoles: string[] }) => {
   } else if (accessToken) {
     return <Navigate to='/unauthorized' replace />;
   } else {
-    return (
-      <Navigate to='/' state={{ from: location, openLogin: true }} replace />
-    );
+    return <Navigate to='/login' state={{ from: location }} replace />;
   }
 };
 

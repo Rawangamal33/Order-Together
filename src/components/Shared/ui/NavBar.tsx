@@ -11,10 +11,8 @@ import { SiDoordash } from 'react-icons/si';
 import { FaUserPlus } from 'react-icons/fa';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdDashboard } from 'react-icons/md';
-import { usePortals } from '@/hooks/usePortals';
 
 const NavBar = () => {
-  const { onOpenLogin, onOpenRegister } = usePortals();
   const [isScrolled, setIsScrolled] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
   const { accessToken, user } = useAuth();
@@ -52,18 +50,17 @@ const NavBar = () => {
         <div className='flex-1 hidden lg:block'></div>
 
         <h1 className='flex-center gap-1.5'>
-          <div>
-            <img src={logo} className='sm:w-10 w-7' alt='logo' />
-          </div>
-          <span
+          <img src={logo} className='sm:w-10 w-7' alt='logo' />
+          <NavLink
+            to='/'
             className={`tracking-wider font-bold ${
               isScrolled
                 ? 'text-red-600 sm:text-2xl text-xl'
                 : 'text-white sm:text-4xl text-xl'
             }`}
           >
-            <NavLink to='/'>OrderTogether</NavLink>
-          </span>
+            OrderTogether
+          </NavLink>
         </h1>
 
         <div className='flex-1 flex justify-end lg:hidden'>
@@ -83,20 +80,18 @@ const NavBar = () => {
         <div className='flex-1 hidden lg:flex items-center justify-end gap-3'>
           {!accessToken && (
             <>
-              <Button
-                variant='outline'
-                className='text-white font-semibold border-[#D83427] bg-red-600'
-                onClick={() => onOpenLogin()}
+              <NavLink
+                to='/login'
+                className='py-1.5 px-4 shadow-sm rounded-md text-white text-[14px] font-semibold border-[#D83427] bg-red-600'
               >
                 Login
-              </Button>
-              <Button
-                variant='outline'
-                className='bg-white text-gray-600 font-semibold'
-                onClick={() => onOpenRegister()}
+              </NavLink>
+              <NavLink
+                to='/register'
+                className='bg-white text-gray-600 py-1.5 px-4 shadow-sm rounded-md text-[14px] font-semibold'
               >
                 Sign Up
-              </Button>
+              </NavLink>
             </>
           )}
           {accessToken && (
@@ -161,12 +156,9 @@ const NavBar = () => {
           <div className='flex flex-col pb-3 pt-2 px-1.5'>
             {!accessToken && (
               <>
-                <div
+                <NavLink
+                  to='/login'
                   className='border-b flex items-center text-left justify-start hover:bg-[#F6F6F6] cursor-pointer'
-                  onClick={() => {
-                    onOpenLogin();
-                    closeSidebar();
-                  }}
                 >
                   <div className='text-lg ml-4 text-red-600'>
                     <SiDoordash />
@@ -177,13 +169,10 @@ const NavBar = () => {
                   >
                     Login
                   </Button>
-                </div>
-                <div
+                </NavLink>
+                <NavLink
+                  to='/register'
                   className='border-b flex items-center text-left justify-start hover:bg-[#F6F6F6] cursor-pointer'
-                  onClick={() => {
-                    onOpenRegister();
-                    closeSidebar();
-                  }}
                 >
                   <div className='text-lg ml-4'>
                     <FaUserPlus />
@@ -194,7 +183,7 @@ const NavBar = () => {
                   >
                     Sign Up
                   </Button>
-                </div>
+                </NavLink>
               </>
             )}
             {accessToken && (
