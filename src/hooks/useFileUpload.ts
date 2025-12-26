@@ -6,7 +6,8 @@ const useFileUpload = () => {
   const uploadFile = async (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    return await postUploadFile(formData).unwrap();
+    const returnedValue = await postUploadFile(formData).unwrap();
+    return returnedValue.url;
   };
   return { uploadFile, isLoading, isError, error };
 };

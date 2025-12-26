@@ -1,5 +1,5 @@
 import { api } from '@/services/api/api';
-import type { Restaurant } from '@/types/restaurants.types';
+import type { Restaurant, RestaurantRequest } from '@/types/restaurants.types';
 
 export const restaurantApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -7,7 +7,16 @@ export const restaurantApi = api.injectEndpoints({
       query: () => 'admin/restaurants',
       providesTags: ['Restaurants'],
     }),
+    postRestaurant: builder.mutation<void, RestaurantRequest>({
+      query: (body) => ({
+        url: 'admin/restaurants',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Restaurants'],
+    }),
   }),
 });
 
-export const { useGetRestaurantsQuery } = restaurantApi;
+export const { useGetRestaurantsQuery, usePostRestaurantMutation } =
+  restaurantApi;
