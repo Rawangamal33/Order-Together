@@ -7,3 +7,9 @@ export interface Restaurant {
   menuItemCount: number;
   createdAt: string;
 }
+
+export interface RestaurantRequest {
+  name: string;
+  logoUrl?: string;
+  isVisible: boolean;
+}
