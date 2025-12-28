@@ -16,6 +16,7 @@ export interface DialogTriggerProps {
   title?: string;
   subTitle?: string;
   showCloseIcon?: boolean;
+  willOpen?: boolean;
   children: React.ReactNode;
   maxWidth: DialogProps['maxWidth'];
 }
@@ -25,6 +26,7 @@ const DialogTrigger = ({
   trigger,
   ariaLabel,
   title,
+  willOpen,
   subTitle,
   maxWidth,
   showCloseIcon,
@@ -33,7 +35,13 @@ const DialogTrigger = ({
   const internalRef = useRef<DialogRefProps>(null);
   const { dialogRef, isOpen, setIsOpen } = useDialogContext();
 
-  const handleOpen = () => setIsOpen(true);
+  const handleOpen = () => {
+    if (willOpen === false) {
+      setIsOpen(false);
+    } else {
+      setIsOpen(true);
+    }
+  };
   const handleClose = () => setIsOpen(false);
 
   const refToUse = externalRef ?? dialogRef ?? internalRef;

@@ -8,7 +8,7 @@ import DialogTrigger from '../Shared/Dialog/DialogTrigger';
 import CreateRestaurant from '../Shared/portals/CreateRestaurant';
 
 export interface RestauranrTableProps {
-  renderControls: (row: Restaurant) => ReactNode;
+  renderControls?: (row: Restaurant) => ReactNode;
 }
 const RestaurantsTable = ({ renderControls }: RestauranrTableProps) => {
   const {

@@ -1,19 +1,32 @@
+import { useEffect, useMemo, useState } from 'react';
 import { BsFillImageFill } from 'react-icons/bs';
+import z from 'zod';
 import { Button } from '../ui/button';
 import { useDialogContext } from '@/context/DialogProvider';
-import { useMemo, useState } from 'react';
-import z from 'zod';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useFileUpload from '@/hooks/useFileUpload';
-import CircularProgress from '@mui/material/CircularProgress';
-import { usePostRestaurantMutation } from '@/features/restuarants/restaurantsApi';
+import {
+  useGetRestaurantByShortCodeQuery,
+  useUpdateRestaurantMutation,
+} from '@/features/restuarants/restaurantsApi';
+import Tooltip from '@mui/material/Tooltip';
+import { MdDelete } from 'react-icons/md';
+import IconButton from '@mui/material/IconButton';
 import { toast } from 'react-toastify';
 
-const CreateRestaurant = () => {
+export interface EditRestaurantProps {
+  id: string;
+  shortCode: string;
+  isVisible: boolean;
+}
+
+const EditRestaurant = ({ id, shortCode, isVisible }: EditRestaurantProps) => {
   const { setIsOpen } = useDialogContext();
-  const [postRestaurant, { isLoading: isCreatingRestaurant }] =
-    usePostRestaurantMutation();
+  const { data } = useGetRestaurantByShortCodeQuery(shortCode);
+  const [updateRestaurant, { isLoading: isUpdating }] =
+    useUpdateRestaurantMutation();
   const {
     uploadFile,
     isLoading: isUploadingFile,
@@ -22,7 +35,7 @@ const CreateRestaurant = () => {
   } = useFileUpload();
   const [previewLogo, setPreviewLogo] = useState('');
 
-  const schema = useMemo(() => {
+  const Schema = useMemo(() => {
     const restaurantNameSchema = z
       .string()
       .min(3, {
@@ -36,44 +49,56 @@ const CreateRestaurant = () => {
       .refine((val) => val.trim().length > 0, {
         message: 'Restaurant name cannot be empty or whitespace only.',
       });
-
     return z.object({
       name: restaurantNameSchema,
+      logoUrl: z.string().url().optional(),
       isVisible: z.boolean(),
     });
   }, []);
 
-  type FormData = z.infer<typeof schema>;
+  type FormData = z.infer<typeof Schema>;
 
   const handleUploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
     const url = await uploadFile(selectedFile);
     setPreviewLogo(url);
+    reset({ ...data, logoUrl: url });
   };
 
   const {
-    register,
     handleSubmit,
+    register,
     reset,
     formState: { isValid, errors },
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      isVisible: true,
-    },
+    resolver: zodResolver(Schema),
     mode: 'onChange',
   });
 
+  useEffect(() => {
+    if (!data) return;
+    if (data) {
+      reset({
+        name: data.name,
+        logoUrl: data.logoUrl ?? undefined,
+        isVisible,
+      });
+      if (data.logoUrl) {
+        setPreviewLogo(data.logoUrl);
+      }
+    }
+  }, [data, reset]);
+
   const onSubmit = async (data: FormData) => {
     try {
-      const payload = {
-        ...data,
+      await updateRestaurant({
+        id,
         name: data.name.trim(),
-        ...(previewLogo && { logoUrl: previewLogo }),
-      };
-      await postRestaurant(payload).unwrap();
-      toast.success('Restaurant Created Successfully.');
+        isVisible: data.isVisible,
+        logoUrl: data.logoUrl,
+      }).unwrap();
+      toast.success('Restaurant Updated Successfully.');
       setIsOpen(false);
       reset();
     } catch (err: any) {
@@ -109,7 +134,26 @@ const CreateRestaurant = () => {
         <span className='text-red-600 text-sm'>{errors.name.message}</span>
       )}
 
-      <label className='text-[14px] mt-2'>Logo</label>
+      <div className='flex justify-between items-center mt-2'>
+        <label className='text-[14px] mt-2'>Logo</label>
+        <Tooltip title='Delete'>
+          <IconButton
+            size='small'
+            sx={{
+              color: '#DC2626',
+              '&:hover': {
+                background: '#fee2e2',
+              },
+            }}
+            onClick={() => {
+              setPreviewLogo('');
+              reset({ ...data, logoUrl: undefined });
+            }}
+          >
+            <MdDelete />
+          </IconButton>
+        </Tooltip>
+      </div>
       <label
         htmlFor='upload-image'
         className={`w-full mx-auto h-32 flex flex-col items-center justify-center gap-2 ${
@@ -177,13 +221,13 @@ const CreateRestaurant = () => {
           type='submit'
           size={'sm'}
           variant='destructive'
-          disabled={!isValid || isUploadingFile || isCreatingRestaurant}
+          disabled={!isValid || isUpdating || isUploadingFile}
         >
-          {isCreatingRestaurant ? 'Creating...' : 'Create Restaurant'}
+          {isUpdating ? 'Saving...' : 'Save Changes'}
         </Button>
       </div>
     </form>
   );
 };
 
-export default CreateRestaurant;
+export default EditRestaurant;
