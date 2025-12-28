@@ -44,7 +44,11 @@ const Dashboard = () => {
         </div>
         <RestaurantsTable
           renderControls={(row: Restaurant) => (
-            <RestaurantActions isVisible={row.isVisible} />
+            <RestaurantActions
+              id={row.id}
+              shortCode={row.shortCode}
+              isVisible={row.isVisible}
+            />
           )}
         />
       </div>
