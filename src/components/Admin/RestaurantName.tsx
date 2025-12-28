@@ -1,4 +1,5 @@
 import { formatDate } from '@/utils/formRelativeDate';
+import { getInitials } from '@/utils/ImgPlaceholder';
 
 export interface RestaurantNameProps {
   logoUrl: string | null;
@@ -12,16 +13,6 @@ const RestaurantName = ({
   createdAt,
   isVisible,
 }: RestaurantNameProps) => {
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map((word) => word.replace(/[^\p{L}]/gu, ''))
-      .filter((word) => word.length > 0)
-      .map((word) => word[0])
-      .join('')
-      .slice(0, 2)
-      .toUpperCase();
-  };
   return (
     <div className='flex items-center gap-3'>
       {logoUrl ? (

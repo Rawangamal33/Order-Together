@@ -7,7 +7,6 @@ import type {
   UpdateRestaurantResponse,
   UpdateRestVisibility,
 } from '@/types/restaurants.types';
-import { url } from 'zod';
 
 export const restaurantApi = api.injectEndpoints({
   endpoints: (builder) => ({

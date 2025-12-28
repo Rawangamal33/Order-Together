@@ -11,6 +11,7 @@ import Dashboard from '@/pages/Admin/Dashboard';
 import UserDashboard from '@/pages/User/UserDashboard';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
+import MenuPage from '@/pages/Admin/MenuPage';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -74,6 +75,16 @@ const AppRoutes = () => {
               element={
                 <AnimationRouting>
                   <Dashboard />
+                </AnimationRouting>
+              }
+            />
+          </Route>
+          <Route element={<ProtectedRoutes allowedRoles={[ROLES.ADMIN]} />}>
+            <Route
+              path={`admin/restaurants/:id/menu-items`}
+              element={
+                <AnimationRouting>
+                  <MenuPage />
                 </AnimationRouting>
               }
             />
