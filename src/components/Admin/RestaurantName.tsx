@@ -15,7 +15,7 @@ const RestaurantName = ({
   const getInitials = (name: string) => {
     return name
       .split(' ')
-      .map((word) => word.replace(/[^a-zA-Z]/g, ''))
+      .map((word) => word.replace(/[^\p{L}]/gu, ''))
       .filter((word) => word.length > 0)
       .map((word) => word[0])
       .join('')

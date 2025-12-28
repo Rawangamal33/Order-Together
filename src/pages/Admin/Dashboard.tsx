@@ -24,7 +24,7 @@ const Dashboard = () => {
             trigger={
               <Button
                 variant='outline'
-                className='text-gray-700 py-5 shadow-sm'
+                className='text-gray-700 py-5 shadow-sm w-full'
               >
                 <div>
                   <FaPlus />
