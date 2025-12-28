@@ -11,6 +11,7 @@ import { IoMdEye } from 'react-icons/io';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { emailSchema, passSchema } from '@/components/Shared/Schemas';
 
 const Login = () => {
   const location = useLocation();
@@ -22,17 +23,8 @@ const Login = () => {
 
   const schema = useMemo(() => {
     return z.object({
-      email: z.string().email({ message: 'Invalid email address.' }),
-      password: z
-        .string()
-        .min(6, { message: 'Password must be at least 6 characters long.' })
-        .regex(/(?=.*[a-z])/, {
-          message: 'Password must contain a lowercase letter.',
-        })
-        .regex(/(?=.*[A-Z])/, {
-          message: 'Password must contain an uppercase letter.',
-        })
-        .regex(/(?=.*\d)/, { message: 'Password must contain a number.' }),
+      email: emailSchema,
+      password: passSchema,
     });
   }, []);
   type FormData = z.infer<typeof schema>;

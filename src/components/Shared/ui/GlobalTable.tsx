@@ -93,8 +93,8 @@ const GlobalTable = <T,>({
               >
                 {emptyDataState || (
                   <div className='py-8'>
-                    <p className='text-lg font-semibold text-gray-600'>
-                      No data available
+                    <p className='text-lg font-semibold text-gray-600 text-center'>
+                      No data available.
                     </p>
                   </div>
                 )}
