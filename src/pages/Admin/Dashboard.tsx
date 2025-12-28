@@ -17,7 +17,7 @@ const Dashboard = () => {
               Restaurant Management
             </h1>
             <p className='text-gray-600 text-sm tracking-wide'>
-              Manage visibility and profiles.
+              Manage visibility and Menus.
             </p>
           </div>
           <DialogTrigger

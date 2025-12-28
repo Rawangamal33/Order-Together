@@ -7,6 +7,7 @@ import type {
   UpdateRestaurantResponse,
   UpdateRestVisibility,
 } from '@/types/restaurants.types';
+import { url } from 'zod';
 
 export const restaurantApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -48,6 +49,14 @@ export const restaurantApi = api.injectEndpoints({
       }),
       invalidatesTags: ['Restaurants'],
     }),
+    DeleteRestaurant: builder.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `admin/restaurants/${id}`,
+        method: 'DELETE',
+        body: id,
+      }),
+      invalidatesTags: ['Restaurants'],
+    }),
   }),
 });
 
@@ -57,4 +66,5 @@ export const {
   useGetRestaurantByShortCodeQuery,
   useUpdateRestaurantVisibilityMutation,
   useUpdateRestaurantMutation,
+  useDeleteRestaurantMutation,
 } = restaurantApi;

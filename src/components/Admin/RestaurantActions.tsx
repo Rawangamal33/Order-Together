@@ -1,12 +1,23 @@
 import { VscLayoutMenubar } from 'react-icons/vsc';
 import Tooltip from '@mui/material/Tooltip';
 import { RiEditBoxLine } from 'react-icons/ri';
-import { MdDelete } from 'react-icons/md';
 import DialogTrigger from '../Shared/Dialog/DialogTrigger';
 import { WithDialogContext } from '@/context/DialogProvider';
 import EditRestaurant from '../Shared/portals/EditRestaurant';
-import VisibilityDialog from '../Shared/portals/VisibilityDialog';
+import RestaurantVisibilityDialog from '../Shared/portals/RestaurantVisibilityDialog';
+import DeleteRestaurantDialog from '../Shared/portals/DeleteRestaurantDialog';
 
+export interface RestaurantActionsProps {
+  id: string;
+  shortCode: string;
+  isVisible: boolean;
+}
+
+const RestaurantActions = ({
+  id,
+  shortCode,
+  isVisible,
+}: RestaurantActionsProps) => {
 export interface RestaurantActionsProps {
   id: string;
   shortCode: string;
@@ -50,13 +61,9 @@ const RestaurantActions = ({
         <EditRestaurant id={id} shortCode={shortCode} isVisible={isVisible} />
       </DialogTrigger>
 
-      <VisibilityDialog id={id} isVisible={isVisible} />
+      <RestaurantVisibilityDialog id={id} isVisible={isVisible} />
 
-      <Tooltip title='Delete'>
-        <button className='action-btn text-[#ee2f2f] hover:bg-[#fee2e2]'>
-          <MdDelete />
-        </button>
-      </Tooltip>
+      <DeleteRestaurantDialog id={id} />
     </div>
   );
 };
