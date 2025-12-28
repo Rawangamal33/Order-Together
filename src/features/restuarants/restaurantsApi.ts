@@ -5,6 +5,7 @@ import type {
   RestaurantRequest,
   UpdateRestaurantRequest,
   UpdateRestaurantResponse,
+  UpdateRestVisibility,
 } from '@/types/restaurants.types';
 
 export const restaurantApi = api.injectEndpoints({
@@ -39,6 +40,14 @@ export const restaurantApi = api.injectEndpoints({
       }),
       invalidatesTags: ['Restaurants'],
     }),
+    updateRestaurantVisibility: builder.mutation<void, UpdateRestVisibility>({
+      query: ({ id, isVisible }) => ({
+        url: `admin/restaurants/${id}/visibility`,
+        method: 'PATCH',
+        body: { isVisible },
+      }),
+      invalidatesTags: ['Restaurants'],
+    }),
   }),
 });
 
@@ -46,5 +55,6 @@ export const {
   useGetRestaurantsQuery,
   usePostRestaurantMutation,
   useGetRestaurantByShortCodeQuery,
+  useUpdateRestaurantVisibilityMutation,
   useUpdateRestaurantMutation,
 } = restaurantApi;

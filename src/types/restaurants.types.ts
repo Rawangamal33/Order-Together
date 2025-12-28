@@ -2,6 +2,7 @@ export interface Restaurant {
   id: string;
   name: string;
   shortCode: string;
+  shortCode: string;
   logoUrl: string | null;
   isVisible: boolean;
   menuItemCount: number;
@@ -30,5 +31,10 @@ export interface UpdateRestaurantResponse {
   id: string;
   name: string;
   shortCode: string | null;
+  isVisible: boolean;
+}
+
+export interface UpdateRestVisibility {
+  id: string;
   isVisible: boolean;
 }
