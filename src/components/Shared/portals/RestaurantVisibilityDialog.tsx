@@ -28,7 +28,8 @@ export default function RestaurantVisibilityDialog({
   id: string;
   isVisible: boolean;
 }) {
-  const [updateVisibility] = useUpdateRestaurantVisibilityMutation();
+  const [updateVisibility, { isLoading }] =
+    useUpdateRestaurantVisibilityMutation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -73,7 +74,10 @@ export default function RestaurantVisibilityDialog({
               : 'Do you want to make this Restaurant Visible to users?'}
           </h2>
           <div className='flex justify-between items-center mt-6'>
-            <Button onClick={() => handleSubmitVisibility(!isVisible)}>
+            <Button
+              onClick={() => handleSubmitVisibility(!isVisible)}
+              disabled={isLoading}
+            >
               Yes
             </Button>
             <Button

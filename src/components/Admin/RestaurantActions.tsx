@@ -25,7 +25,7 @@ const RestaurantActions = ({
         <NavLink
           to={`/admin/restaurants/${id}/menu-items`}
           className={`action-btn text-[#1976d2] hover:bg-[#48baee14] ${
-            !isVisible && 'disabled'
+            !isVisible && 'text-[#b8bcc3]'
           }`}
         >
           <VscLayoutMenubar />
@@ -46,32 +46,8 @@ const RestaurantActions = ({
         ariaLabel='Edit Restaurant Details Dialog'
         title='Edit Restaurant Details'
         showCloseIcon={true}
-        maxWidth='sm'
         willOpen={isVisible ?? false}
-      >
-        <EditRestaurant id={id} shortCode={shortCode} isVisible={isVisible} />
-      </DialogTrigger>
-
-      <RestaurantVisibilityDialog id={id} isVisible={isVisible} />
-
-      <DeleteRestaurantDialog id={id} />
-      <DialogTrigger
-        trigger={
-          <Tooltip title='Edit Details'>
-            <button
-              className={`action-btn text-[#1976d2] hover:bg-[#48baee14] ${
-                !isVisible && 'disabled'
-              }`}
-            >
-              <RiEditBoxLine />
-            </button>
-          </Tooltip>
-        }
-        ariaLabel='Edit Restaurant Details Dialog'
-        title='Edit Restaurant Details'
-        showCloseIcon={true}
         maxWidth='sm'
-        willOpen={isVisible ?? false}
       >
         <EditRestaurant id={id} shortCode={shortCode} isVisible={isVisible} />
       </DialogTrigger>
@@ -83,5 +59,4 @@ const RestaurantActions = ({
   );
 };
 
-export default WithDialogContext(RestaurantActions);
 export default WithDialogContext(RestaurantActions);

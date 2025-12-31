@@ -1,7 +1,6 @@
 import { Button } from '@/components/Shared/ui/button';
 import FeaturedSection from '@/components/Shared/ui/FeaturedSection';
 import Footer from '@/components/Shared/ui/Footer';
-import { NavLink } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 
 const Home = () => {
@@ -18,9 +17,12 @@ const Home = () => {
             cart, tracks who ordered what, and calculates debts automatically.
           </p>
           <div className='flex-center gap-2 mt-10'>
-            <Button className='bg-orange-400 sm:text-[14px] text-[13px] md:py-5 font-bold cursor-pointer'>
-              <NavLink to=''>Start a Group Order</NavLink>
-            </Button>
+            <ScrollLink to='getApp' smooth={true} duration={500}>
+              <Button className='bg-orange-400 sm:text-[14px] text-[13px] md:py-5 font-bold cursor-pointer'>
+                Get it on App
+              </Button>
+            </ScrollLink>
+
             <ScrollLink to='workGuide' smooth={true} duration={500}>
               <Button
                 className='md:py-5 font-bold sm:text-[14px] text-[13px] cursor-pointer text-gray-700'

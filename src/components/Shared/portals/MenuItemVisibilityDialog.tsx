@@ -5,6 +5,8 @@ import Tooltip from '@mui/material/Tooltip';
 import { IoMdEye } from 'react-icons/io';
 import { FaRegEyeSlash } from 'react-icons/fa';
 import Button from '@mui/material/Button';
+import { useUpdateMenuItemVisibilityMutation } from '@/features/menuItems/menuItemsApi';
+import { toast } from 'react-toastify';
 
 const style = {
   position: 'absolute',
@@ -26,9 +28,26 @@ export default function MenuItemVisibilityDialog({
   id: string;
   isVisible: boolean;
 }) {
+  const [updateVisibility, { isLoading }] =
+    useUpdateMenuItemVisibilityMutation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleSubmitVisibility = async (value: boolean) => {
+    try {
+      await updateVisibility({
+        id,
+        isVisible: value,
+      }).unwrap();
+      toast.success(
+        `This Restaurant is ${value ? 'Visible to' : 'Hidden from'} users.`
+      );
+      handleClose();
+    } catch (err) {
+      toast.error('Something Went Wrong. Please Try again.');
+    }
+  };
 
   return (
     <div>
@@ -55,7 +74,12 @@ export default function MenuItemVisibilityDialog({
               : 'Do you want to make this Menu Item Visible to users?'}
           </h2>
           <div className='flex justify-between items-center mt-6'>
-            <Button>Yes</Button>
+            <Button
+              onClick={() => handleSubmitVisibility(!isVisible)}
+              disabled={isLoading}
+            >
+              Yes
+            </Button>
             <Button
               onClick={handleClose}
               sx={{

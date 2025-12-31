@@ -15,8 +15,8 @@ export interface DialogTriggerProps {
   ariaLabel?: string;
   title?: string;
   subTitle?: string;
-  showCloseIcon?: boolean;
   willOpen?: boolean;
+  showCloseIcon?: boolean;
   children: React.ReactNode;
   maxWidth: DialogProps['maxWidth'];
 }

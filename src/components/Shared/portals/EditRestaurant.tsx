@@ -25,7 +25,8 @@ export interface EditRestaurantProps {
 
 const EditRestaurant = ({ id, shortCode, isVisible }: EditRestaurantProps) => {
   const { setIsOpen } = useDialogContext();
-  const { data } = useGetRestaurantByShortCodeQuery(shortCode);
+  const { data, isLoading: isLoadingDetails } =
+    useGetRestaurantByShortCodeQuery(shortCode);
   const [updateRestaurant, { isLoading: isUpdating }] =
     useUpdateRestaurantMutation();
   const {
@@ -45,14 +46,6 @@ const EditRestaurant = ({ id, shortCode, isVisible }: EditRestaurantProps) => {
   }, []);
 
   type FormData = z.infer<typeof Schema>;
-
-  const handleUploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (!selectedFile) return;
-    const url = await uploadFile(selectedFile);
-    setPreviewLogo(url);
-    reset({ ...data, logoUrl: url });
-  };
 
   const {
     handleSubmit,
@@ -78,6 +71,14 @@ const EditRestaurant = ({ id, shortCode, isVisible }: EditRestaurantProps) => {
     }
   }, [data, reset]);
 
+  const handleUploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
+    const url = await uploadFile(selectedFile);
+    setPreviewLogo(url);
+    reset({ ...data, logoUrl: url });
+  };
+
   const onSubmit = async (data: FormData) => {
     try {
       await updateRestaurant({
@@ -101,6 +102,13 @@ const EditRestaurant = ({ id, shortCode, isVisible }: EditRestaurantProps) => {
       }
     }
   };
+  if (isLoadingDetails) {
+    return (
+      <div className='flex-center min-h-screen'>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <form

@@ -8,7 +8,6 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import ProtectedRoutes from './ProtectedRoutes';
 import NotFound from '@/pages/NotFound';
 import Dashboard from '@/pages/Admin/Dashboard';
-import UserDashboard from '@/pages/User/UserDashboard';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import MenuPage from '@/pages/Admin/MenuPage';
@@ -85,20 +84,6 @@ const AppRoutes = () => {
               element={
                 <AnimationRouting>
                   <MenuPage />
-                </AnimationRouting>
-              }
-            />
-          </Route>
-          <Route
-            element={
-              <ProtectedRoutes allowedRoles={[ROLES.ADMIN, ROLES.USER]} />
-            }
-          >
-            <Route
-              path='user'
-              element={
-                <AnimationRouting>
-                  <UserDashboard />
                 </AnimationRouting>
               }
             />

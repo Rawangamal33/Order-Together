@@ -23,7 +23,7 @@ const MenuName = ({
       </div>
       <div className={`text-gray-600`}>{description}</div>
       <div
-        className={`text-[12px] text-end ${
+        className={`text-[12px] text-end lg:pr-28 sm:mt-0 mt-2 ${
           isVisible ? 'text-[#6b7280]' : 'text-[#9CA3AF]'
         } `}
       >

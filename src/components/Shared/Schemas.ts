@@ -82,5 +82,7 @@ export const priceMenuSchema = z
       const decimalPlaces = (price.toString().split('.')[1] || '').length;
       return decimalPlaces <= 2;
     },
-    { message: 'Price cannot have more than 2 decimal places (e.g., 10.99).' }
+    {
+      message: 'Price cannot have more than 2 decimal places (e.g., 10.99).',
+    }
   );

@@ -10,6 +10,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { usePostRestaurantMutation } from '@/features/restuarants/restaurantsApi';
 import { toast } from 'react-toastify';
 import { restaurantNameSchema } from '../Schemas';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import { MdDelete } from 'react-icons/md';
 
 const CreateRestaurant = () => {
   const { setIsOpen } = useDialogContext();
@@ -96,7 +99,25 @@ const CreateRestaurant = () => {
         <span className='text-red-600 text-sm'>{errors.name.message}</span>
       )}
 
-      <label className='text-[14px] mt-2'>Logo</label>
+      <div className='flex justify-between items-center'>
+        <label className='text-[14px] mt-2'>Logo</label>
+        <Tooltip title='Delete'>
+          <IconButton
+            size='small'
+            sx={{
+              color: '#DC2626',
+              '&:hover': {
+                background: '#fee2e2',
+              },
+            }}
+            onClick={() => {
+              setPreviewLogo('');
+            }}
+          >
+            <MdDelete />
+          </IconButton>
+        </Tooltip>
+      </div>
       <label
         htmlFor='upload-image'
         className={`w-full mx-auto h-32 flex flex-col items-center justify-center gap-2 ${

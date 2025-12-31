@@ -21,14 +21,14 @@ const style = {
 };
 
 export default function DeleteRestaurantDialog({ id }: { id: string }) {
-  const [deleteRestaurant] = useDeleteRestaurantMutation();
+  const [deleteRestaurant, { isLoading }] = useDeleteRestaurantMutation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleDelete = async () => {
     try {
-      await deleteRestaurant({ id }).unwrap();
+      await deleteRestaurant(id).unwrap();
       toast.success('Restaurant Deleted Successfully.');
       handleClose();
     } catch (err) {
@@ -71,6 +71,7 @@ export default function DeleteRestaurantDialog({ id }: { id: string }) {
                 },
               }}
               onClick={handleDelete}
+              disabled={isLoading}
             >
               Yes
             </Button>

@@ -1,7 +1,11 @@
 import { api } from '@/services/api/api';
 import type {
+  GetMenuDetailsByIdResponse,
   GetMenuItemsResponse,
   PostMenuItemRequest,
+  UpdateMenuItemRequest,
+  UpdateMenuItemResponse,
+  updateMenuItemVisibilityRequest,
 } from '@/types/menuItems.types';
 
 const menuItemsApi = api.injectEndpoints({
@@ -18,7 +22,47 @@ const menuItemsApi = api.injectEndpoints({
       }),
       invalidatesTags: ['MenuItems'],
     }),
+    GetMenuDetailsById: builder.query<GetMenuDetailsByIdResponse, string>({
+      query: (id) => `admin/menu-items/${id}`,
+      providesTags: ['MenuItems'],
+    }),
+    updateMenuItem: builder.mutation<
+      UpdateMenuItemResponse,
+      UpdateMenuItemRequest
+    >({
+      query: ({ id, ...body }) => ({
+        url: `admin/menu-items/${id}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['MenuItems'],
+    }),
+    updateMenuItemVisibility: builder.mutation<
+      void,
+      updateMenuItemVisibilityRequest
+    >({
+      query: ({ id, ...body }) => ({
+        url: `admin/menu-items/${id}/visibility`,
+        method: 'PATCH',
+        body,
+      }),
+      invalidatesTags: ['MenuItems'],
+    }),
+    deleteMenuItem: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `admin/menu-items/${id}`,
+        method: 'Delete',
+      }),
+      invalidatesTags: ['MenuItems'],
+    }),
   }),
 });
 
-export const { useGetMenuItemsQuery, usePostMenuItemMutation } = menuItemsApi;
+export const {
+  useGetMenuItemsQuery,
+  usePostMenuItemMutation,
+  useGetMenuDetailsByIdQuery,
+  useUpdateMenuItemMutation,
+  useUpdateMenuItemVisibilityMutation,
+  useDeleteMenuItemMutation,
+} = menuItemsApi;
