@@ -36,7 +36,7 @@ const RestaurantActions = ({
           <Tooltip title='Edit Details'>
             <button
               className={`action-btn text-[#1976d2] hover:bg-[#48baee14] ${
-                !isVisible && 'disabled'
+                !isVisible && 'text-[#b8bcc3]'
               }`}
             >
               <RiEditBoxLine />
@@ -46,7 +46,6 @@ const RestaurantActions = ({
         ariaLabel='Edit Restaurant Details Dialog'
         title='Edit Restaurant Details'
         showCloseIcon={true}
-        willOpen={isVisible ?? false}
         maxWidth='sm'
       >
         <EditRestaurant id={id} shortCode={shortCode} isVisible={isVisible} />

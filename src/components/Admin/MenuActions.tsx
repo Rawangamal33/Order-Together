@@ -19,7 +19,7 @@ const MenuActions = ({ id, isVisible }: MenuActionsProps) => {
           <Tooltip title='Edit Details'>
             <button
               className={`action-btn text-[#1976d2] hover:bg-[#48baee14] ${
-                !isVisible && 'disabled'
+                !isVisible && 'text-[#b8bcc3]'
               }`}
             >
               <RiEditBoxLine />
@@ -28,7 +28,6 @@ const MenuActions = ({ id, isVisible }: MenuActionsProps) => {
         }
         ariaLabel='Edit Menu Item Dialog'
         title='Edit Menu Item'
-        willOpen={isVisible ?? false}
         showCloseIcon={true}
         maxWidth='sm'
       >
