@@ -11,6 +11,8 @@ import type { ReactNode } from 'react';
 export interface CellProps<T> {
   field: keyof T;
   label?: string;
+  minWidth?: number;
+  width?: number | string;
   render?: (row: T) => ReactNode;
 }
 
@@ -76,7 +78,13 @@ const GlobalTable = <T,>({
                   >
                     {cells.map((cell, c) => {
                       return (
-                        <TableCell key={c}>
+                        <TableCell
+                          key={c}
+                          sx={{
+                            minWidth: cell.minWidth,
+                            width: cell.width,
+                          }}
+                        >
                           {renderCellData(cell, row)}
                         </TableCell>
                       );

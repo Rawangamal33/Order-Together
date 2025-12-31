@@ -1,17 +1,117 @@
+import { logoUrlSchema, userNameSchema } from '@/components/Shared/Schemas';
 import { Button } from '@/components/Shared/ui/button';
-import { useState } from 'react';
+import ErrorPage from '@/components/Shared/ui/ErrorPage';
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from '@/features/profile/profileApi';
+import useFileUpload from '@/hooks/useFileUpload';
+import { getInitials } from '@/utils/ImgPlaceholder';
+import { zodResolver } from '@hookform/resolvers/zod';
+import CircularProgress from '@mui/material/CircularProgress';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { MdDelete } from 'react-icons/md';
+import { toast } from 'react-toastify';
+import z from 'zod';
 
 const UpdateProfile = () => {
-  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | undefined>(undefined);
+  const {
+    data,
+    isFetching: isLoadingInitialData,
+    isError,
+    error,
+  } = useGetProfileQuery();
+  const {
+    uploadFile,
+    isLoading: isUploadingFile,
+    isError: isErrUploadingFile,
+    error: errUploadingFile,
+  } = useFileUpload();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // setSelectedFile(file);
-      setPreview(URL.createObjectURL(file));
+  const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
+  const [previewImg, setPreviewImg] = useState('');
+
+  const profileSchema = useMemo(() => {
+    return z.object({
+      firstName: userNameSchema,
+      lastName: userNameSchema,
+      avatarUrl: logoUrlSchema,
+    });
+  }, []);
+
+  type FormData = z.infer<typeof profileSchema>;
+
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { isValid, errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(profileSchema),
+    mode: 'onChange',
+  });
+  useEffect(() => {
+    if (data?.user) {
+      reset({
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        avatarUrl: data.user.avatarUrl ?? undefined,
+      });
+      if (data.user.avatarUrl) {
+        setPreviewImg(data.user.avatarUrl);
+      }
+    }
+  }, [data, reset]);
+
+  if (!isLoadingInitialData && isError) {
+    return (
+      <ErrorPage
+        status={(error as any)?.status}
+        message={(error as any)?.data?.title}
+      />
+    );
+  }
+
+  if (isLoadingInitialData) {
+    return (
+      <div className='flex-center min-h-screen'>
+        <CircularProgress />
+      </div>
+    );
+  }
+
+  const handleUploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
+    const url = await uploadFile(selectedFile);
+    setPreviewImg(url);
+    reset({ ...data, avatarUrl: url });
+  };
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      await updateProfile({
+        firstName: data.firstName.trim(),
+        lastName: data.lastName.trim(),
+        avatarUrl: data.avatarUrl ?? null,
+      }).unwrap();
+      toast.success('Profile has been Updated Successfully.');
+    } catch (err: any) {
+      if (!err?.data) {
+        toast.error('Please check Network Connection.');
+      } else if (err?.data?.status === 409) {
+        toast.error(err.data.title);
+      } else if (err?.data?.status === 400) {
+        toast.error(err.data.title);
+      } else {
+        toast.error('Something went wrong. Please try again.');
+      }
     }
   };
+
   return (
     <section className='sm:pt-28 pt-20 min-h-screen px-6 bg-[#F9FAFB] pb-10'>
       <div className='md:w-[60%] sm:[70%] mx-auto'>
@@ -27,13 +127,25 @@ const UpdateProfile = () => {
             This information will be visible to other participants in your group
             orders.
           </p>
-          <form className='flex flex-col gap-3 mt-8'>
-            <div className='flex gap-5 items-center'>
-              {preview && (
+          <div className='flex justify-between items-center mt-8'>
+            <div className='flex gap-4 items-center '>
+              {isUploadingFile && !isErrUploadingFile ? (
+                <div
+                  className='sm:w-16 sm:h-16 w-12 h-12 rounded-full 
+             bg-gradient-to-r from-gray-50 via-gray-400 to-gray-950
+             bg-[length:200%_100%] animate-pulse'
+                />
+              ) : previewImg ? (
                 <img
-                  src={preview}
+                  src={previewImg}
                   className='sm:w-16 sm:h-16 w-12 h-12 rounded-full object-cover'
                 />
+              ) : (
+                <div className='sm:w-12 sm:h-12 w-10 h-10 rounded-full flex-center font-bold text-xs text-white shadow-sm bg-gradient-to-br from-gray-600 to-gray-800'>
+                  {getInitials(
+                    data?.user?.firstName + ' ' + data?.user?.lastName
+                  )}
+                </div>
               )}
               <label
                 htmlFor='avatar'
@@ -47,9 +159,37 @@ const UpdateProfile = () => {
                 id='avatar'
                 className='hidden'
                 accept='.pdf, .jpg , .jpeg , .png'
-                onChange={handleFileChange}
+                onChange={handleUploadFile}
               />
             </div>
+            <Tooltip title='Delete'>
+              <IconButton
+                size='small'
+                sx={{
+                  color: '#DC2626',
+                  '&:hover': {
+                    background: '#fee2e2',
+                  },
+                }}
+                onClick={() => {
+                  setPreviewImg('');
+                  reset({ ...data, avatarUrl: undefined });
+                }}
+              >
+                <MdDelete />
+              </IconButton>
+            </Tooltip>
+          </div>
+          {isErrUploadingFile && (
+            <div className='text-red-600 text-sm mt-3'>
+              {(errUploadingFile as any).data.title ||
+                'File upload failed. Please Try again.'}
+            </div>
+          )}
+          <form
+            className='flex flex-col gap-3 mt-2'
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <div className='flex flex-wrap mt-4.5 gap-4 text-gray-800'>
               <div className='grow'>
                 <label
@@ -61,8 +201,14 @@ const UpdateProfile = () => {
                 <input
                   type='text'
                   id='firstName'
+                  {...register('firstName')}
                   className='inputStyles mt-1'
                 />
+                {errors.firstName && (
+                  <span className='text-sm text-red-600'>
+                    {errors.firstName.message}
+                  </span>
+                )}
               </div>
               <div className='grow'>
                 <label
@@ -71,84 +217,29 @@ const UpdateProfile = () => {
                 >
                   Last name
                 </label>
-                <input type='text' id='lastName' className='inputStyles mt-1' />
+                <input
+                  type='text'
+                  id='lastName'
+                  {...register('lastName')}
+                  className='inputStyles mt-1'
+                />
+                {errors.lastName && (
+                  <span className='text-sm text-red-600'>
+                    {errors.lastName.message}
+                  </span>
+                )}
               </div>
             </div>
             <div className='mt-6 text-end'>
               <Button
                 type='submit'
                 className='bg-orangeColor sm:text-[14px] text-[12px]'
+                disabled={!isValid || isUpdating || isUploadingFile}
               >
-                Save Profile
+                {isUpdating ? 'Saving...' : 'Save Profile'}
               </Button>
             </div>
           </form>
-        </div>
-        {/*  */}
-        <div className='bg-white p-6 rounded-xl shadow-md mt-8 h-fit'>
-          <h2 className='sm:text-lg text-base tracking-wide'>Security</h2>
-          <p className='text-gray-500 sm:text-base text-sm pb-6 border-b mt-0.5'>
-            Update your password to keep your account safe.
-          </p>
-          <form className='flex flex-col gap-3 mt-8'>
-            <div className='flex flex-wrap mt-4.5 gap-4 text-gray-800'>
-              <div className='grow'>
-                <label
-                  htmlFor='currentPass'
-                  className='sm:text-[14px] text-[13px]'
-                >
-                  Current Password
-                </label>
-                <input
-                  type='password'
-                  id='currentPass'
-                  className='inputStyles mt-1'
-                />
-              </div>
-              <div className='grow'>
-                <label htmlFor='newPass' className='sm:text-[14px] text-[13px]'>
-                  New Password
-                </label>
-                <input
-                  type='password'
-                  id='newPass'
-                  className='inputStyles mt-1'
-                />
-              </div>
-              <div className='w-full mt-3'>
-                <label
-                  htmlFor='confirmNewPass'
-                  className='whitespace-nowrap sm:text-[14px] text-[13px]'
-                >
-                  Confirm New Password
-                </label>
-                <input
-                  type='password'
-                  id='confirmNewPass'
-                  className='inputStyles mt-1'
-                />
-              </div>
-            </div>
-            <div className='mt-6 text-end'>
-              <Button type='submit' className='sm:text-[14px] text-[12px]'>
-                Update Password
-              </Button>
-            </div>
-          </form>
-        </div>
-        {/*  */}
-        <div className='bg-red-50/70 py-6 px-4 rounded-xl shadow-sm border mt-8 flex justify-between items-center'>
-          <div className='flex flex-col gap-1'>
-            <h3 className='font-semibold sm:text-base text-[15px] text-red-800'>
-              Delete Account
-            </h3>
-            <p className='sm:text-sm text-[12px] text-red-600 tracking-wide'>
-              Permanently remove your account and all order history.{' '}
-            </p>
-          </div>
-          <Button className='text-red-600 border border-red-400 bg-white px-4 py-2 rounded-lg hover:bg-red-50 transition-colors  whitespace-nowrap sm:text-[14px] text-[12px]'>
-            Delete Account
-          </Button>
         </div>
       </div>
     </section>

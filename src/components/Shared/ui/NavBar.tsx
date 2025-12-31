@@ -9,15 +9,19 @@ import useLogout from '@/hooks/useLogout';
 import { MdLogin } from 'react-icons/md';
 import { SiDoordash } from 'react-icons/si';
 import { FaUserPlus } from 'react-icons/fa';
-import { FaUserCircle } from 'react-icons/fa';
 import { MdDashboard } from 'react-icons/md';
+import { useGetProfileQuery } from '@/features/profile/profileApi';
+import { getInitials } from '@/utils/ImgPlaceholder';
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
-  const { accessToken, user } = useAuth();
-  const roles = user?.role;
+  const { accessToken } = useAuth();
+
   const { logout, isLoading } = useLogout();
+  const { data } = useGetProfileQuery(undefined, { skip: !accessToken });
+  const roles = data?.user?.role;
+  const userImg = data?.user?.avatarUrl;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,25 +98,37 @@ const NavBar = () => {
               </NavLink>
             </>
           )}
+
           {accessToken && (
             <>
               <NavLink
                 to='/profile'
-                className={`text-[22px] mr-3 cursor-pointer
-                ${isScrolled ? 'text-orangeColor' : 'text-amber-50'}`}
+                className='text-[22px] mr-3 cursor-pointer'
               >
-                <FaUserCircle />
+                {userImg ? (
+                  <img
+                    src={userImg}
+                    className='w-8 h-8 rounded-full object-cover'
+                  />
+                ) : (
+                  <div className='w-8 h-8 rounded-full flex-center font-bold text-xs text-white shadow-sm bg-gradient-to-br from-gray-600 to-gray-800'>
+                    {getInitials(
+                      data?.user?.firstName + ' ' + data?.user?.lastName
+                    )}
+                  </div>
+                )}
               </NavLink>
-
-              <NavLink
-                to={roles?.includes('Admin') ? '/admin/restaurants' : '/user'}
-                className={({ isActive }) => `mr-3 hover:underline ${
-                  isActive ? 'underline' : ''
-                }
+              {accessToken && roles?.includes('Admin') && (
+                <NavLink
+                  to={'/admin/restaurants'}
+                  className={({ isActive }) => `mr-3 hover:underline ${
+                    isActive ? 'underline' : ''
+                  }
                 ${isScrolled ? 'text-black' : 'text-white '}`}
-              >
-                Dashboard
-              </NavLink>
+                >
+                  Dashboard
+                </NavLink>
+              )}
 
               <Button
                 variant='outline'
@@ -186,27 +202,30 @@ const NavBar = () => {
                 </NavLink>
               </>
             )}
+
+            {accessToken && roles?.includes('Admin') && (
+              <NavLink
+                to={'/admin/restaurants'}
+                className={({ isActive }) =>
+                  `border-b flex items-center text-left justify-start hover:bg-[#F6F6F6] cursor-pointer ${
+                    isActive ? 'underline' : ''
+                  }`
+                }
+              >
+                <div className='text-lg ml-4 text-secondRedColor'>
+                  <MdDashboard />
+                </div>
+                <Button
+                  variant='ghost'
+                  className='w-full py-6 hover:bg-none font-semibold text-gray-700 border-none text-left text-base justify-start'
+                >
+                  Dashboard
+                </Button>
+              </NavLink>
+            )}
+
             {accessToken && (
               <>
-                <NavLink
-                  to={roles?.includes('Admin') ? '/admin/restaurants' : '/user'}
-                  className={({ isActive }) =>
-                    `border-b flex items-center text-left justify-start hover:bg-[#F6F6F6] cursor-pointer ${
-                      isActive ? 'underline' : ''
-                    }`
-                  }
-                >
-                  <div className='text-lg ml-4 text-secondRedColor'>
-                    <MdDashboard />
-                  </div>
-                  <Button
-                    variant='ghost'
-                    className='w-full py-6 hover:bg-none font-semibold text-gray-700 border-none text-left text-base justify-start'
-                  >
-                    Dashboard
-                  </Button>
-                </NavLink>
-
                 <NavLink
                   to='/profile'
                   className={({ isActive }) =>
@@ -215,9 +234,18 @@ const NavBar = () => {
                     }`
                   }
                 >
-                  <div className='text-lg ml-4 text-secondRedColor'>
-                    <FaUserCircle />
-                  </div>
+                  {userImg ? (
+                    <img
+                      src={userImg}
+                      className='w-7 h-7 ml-3 rounded-full object-cover'
+                    />
+                  ) : (
+                    <div className='w-7 h-7 ml-3 rounded-full flex-center font-bold text-[10px] px-3 text-white shadow-sm bg-gradient-to-br from-gray-600 to-gray-800'>
+                      {getInitials(
+                        data?.user?.firstName + ' ' + data?.user?.lastName
+                      )}
+                    </div>
+                  )}
                   <Button
                     variant='ghost'
                     className='w-full py-6 hover:bg-none font-semibold text-gray-700 border-none text-left text-base justify-start'

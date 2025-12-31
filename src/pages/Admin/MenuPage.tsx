@@ -3,36 +3,39 @@ import MenuTable from '@/components/Admin/MenuTable';
 import DialogTrigger from '@/components/Shared/Dialog/DialogTrigger';
 import AddMenuItem from '@/components/Shared/portals/AddMenuItem';
 import { Button } from '@/components/Shared/ui/button';
+import ErrorPage from '@/components/Shared/ui/ErrorPage';
 import { WithDialogContext } from '@/context/DialogProvider';
 import { useGetMenuItemsQuery } from '@/features/menuItems/menuItemsApi';
 import type { MenuItem } from '@/types/menuItems.types';
 import { getInitials } from '@/utils/ImgPlaceholder';
 import CircularProgress from '@mui/material/CircularProgress';
 import { FaPlus } from 'react-icons/fa';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const MenuPage = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const { data, isLoading, isError, error } = useGetMenuItemsQuery(id!, {
-    skip: !id,
-  });
-  if (isLoading) return <CircularProgress />;
-
-  if (isError || !data) {
+  if (!id) {
     return (
       <div className='pt-40 flex flex-col gap-2 items-center text-2xl text-red-600'>
-        <h2>{(error as any)?.status}</h2>
-        <p> Failed to load Restaurant Menu</p>
-
-        <Button
-          variant='outline'
-          className='text-white mt-4 rounded-sm border-[#D83427] bg-orangeColor hover:bg-black hover:text-white'
-          onClick={() => navigate('/')}
-        >
-          Back to Home
-        </Button>
+        Invalid restaurant
       </div>
+    );
+  }
+  const { data, isLoading, isError, error } = useGetMenuItemsQuery(id);
+
+  if (isLoading) {
+    return (
+      <div className='flex-center min-h-screen'>
+        <CircularProgress />
+      </div>
+    );
+  }
+  if (!isLoading && isError) {
+    return (
+      <ErrorPage
+        status={(error as any)?.status}
+        message={(error as any)?.data?.title}
+      />
     );
   }
   if (!data) return undefined;
@@ -45,15 +48,15 @@ const MenuPage = () => {
               <img
                 src={data.logoUrl}
                 alt='restaurant image'
-                className='w-16 h-16 rounded-full object-cover'
+                className='md:w-16 md:h-16 w-14 h-14 rounded-full object-cover'
               />
             ) : (
-              <div className='w-16 h-16 rounded-full flex-center font-bold font-sans text-[24px] text-white shadow-lg border-4 border-white bg-gradient-to-br from-gray-700 to-gray-900'>
+              <div className='md:w-16 md:h-16 w-14 h-14 rounded-full flex-center font-bold font-sans text-[24px] text-white shadow-lg border-4 border-white bg-gradient-to-br from-gray-700 to-gray-900'>
                 {getInitials(data.name)}
               </div>
             )}
             <div>
-              <h1 className='text-3xl text-gray-900 font-semibold'>
+              <h1 className='md:text-3xl text-[24px] text-gray-900 font-semibold'>
                 {data.name}
               </h1>
               <p className='text-sm font-sans text-gray-500 tracking-wide'>
@@ -83,6 +86,7 @@ const MenuPage = () => {
         <MenuTable
           menuItems={data.menuItems}
           isLoading={isLoading}
+          id={id}
           renderControls={(row: MenuItem) => (
             <MenuActions id={row.id} isVisible={row.isVisible} />
           )}

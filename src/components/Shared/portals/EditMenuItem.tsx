@@ -1,21 +1,25 @@
-import { usePostMenuItemMutation } from '@/features/menuItems/menuItemsApi';
-import { Button } from '../ui/button';
 import { useDialogContext } from '@/context/DialogProvider';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import z from 'zod';
 import {
   descriptionMenuSchema,
   menuNameSchema,
   priceMenuSchema,
 } from '../Schemas';
-import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '../ui/button';
+import {
+  useGetMenuDetailsByIdQuery,
+  useUpdateMenuItemMutation,
+} from '@/features/menuItems/menuItemsApi';
+import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
 
-const AddMenuItem = ({ id }: { id: string }) => {
+const EditMenuItem = ({ id }: { id: string }) => {
+  const { data, isLoading: isLoadingDetails } = useGetMenuDetailsByIdQuery(id);
+  const [updateMenu, { isLoading: isUpdating }] = useUpdateMenuItemMutation();
   const { setIsOpen } = useDialogContext();
-
-  const [postMenuItem, { isLoading }] = usePostMenuItemMutation();
 
   const menuSchema = useMemo(() => {
     return z.object({
@@ -35,22 +39,30 @@ const AddMenuItem = ({ id }: { id: string }) => {
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(menuSchema),
-    defaultValues: {
-      isVisible: true,
-    },
     mode: 'onChange',
   });
 
+  useEffect(() => {
+    if (data) {
+      reset({
+        name: data.name,
+        price: data.price,
+        description: data.description || '',
+        isVisible: data.isVisible,
+      });
+    }
+  }, [data, reset]);
+
   const onSubmit = async (data: FormData) => {
     try {
-      await postMenuItem({
+      await updateMenu({
         id,
-        name: data.name.trim(),
+        name: data.name,
         price: data.price,
         description: data.description,
         isVisible: data.isVisible,
       }).unwrap();
-      toast.success('Item Addes Successfully.');
+      toast.success('Menu Item Updated Successfully.');
       setIsOpen(false);
       reset();
     } catch (err: any) {
@@ -65,6 +77,14 @@ const AddMenuItem = ({ id }: { id: string }) => {
       }
     }
   };
+
+  if (isLoadingDetails) {
+    return (
+      <div className='flex-center min-h-screen'>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <form
@@ -144,13 +164,13 @@ const AddMenuItem = ({ id }: { id: string }) => {
           type='submit'
           size={'sm'}
           variant='destructive'
-          disabled={!isValid || isLoading}
+          disabled={!isValid || isUpdating}
         >
-          {isLoading ? 'Creating...' : 'Create Item'}
+          {isUpdating ? 'Saving...' : 'Save Changes'}
         </Button>
       </div>
     </form>
   );
 };
 
-export default AddMenuItem;
+export default EditMenuItem;

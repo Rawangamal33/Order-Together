@@ -48,11 +48,10 @@ export const restaurantApi = api.injectEndpoints({
       }),
       invalidatesTags: ['Restaurants'],
     }),
-    DeleteRestaurant: builder.mutation<void, { id: string }>({
-      query: ({ id }) => ({
+    DeleteRestaurant: builder.mutation<void, string>({
+      query: (id) => ({
         url: `admin/restaurants/${id}`,
         method: 'DELETE',
-        body: id,
       }),
       invalidatesTags: ['Restaurants'],
     }),

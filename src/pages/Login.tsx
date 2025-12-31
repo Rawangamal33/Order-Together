@@ -51,7 +51,7 @@ const Login = () => {
       if (userRoles.includes('Admin')) {
         navigate(from || '/admin/restaurants', { replace: true });
       } else if (userRoles.includes('User')) {
-        navigate(from || '/user', { replace: true });
+        navigate(from || '/', { replace: true });
       }
     } catch (err: any) {
       if (!err?.data) {
@@ -132,10 +132,7 @@ const Login = () => {
               {errors.password.message}
             </span>
           )}
-          <div className='flex gap-1 sm:text-sm text-[12px] text-gray-500 mt-2'>
-            <input type='checkbox' id='persist' className='accent-blue-600' />
-            <label htmlFor='persist'>Remember me</label>
-          </div>
+
           <button
             type='submit'
             disabled={isLoading}

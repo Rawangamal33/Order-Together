@@ -29,14 +29,10 @@ export interface RegisterRequest {
   password: string;
 }
 
-export interface RefreshResponse {
-  accessToken: string;
-  refreshToken: string;
-}
+export interface RefreshResponse extends LoginResponse {}
 
 export interface RefreshRequest {
-  userId: string;
-  token: string;
+  token: string | null;
 }
 
 export interface LogoutRequest extends RefreshRequest {}

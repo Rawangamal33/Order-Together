@@ -4,6 +4,7 @@ import DialogTrigger from '../Shared/Dialog/DialogTrigger';
 import { WithDialogContext } from '@/context/DialogProvider';
 import MenuItemVisibilityDialog from '../Shared/portals/MenuItemVisibilityDialog';
 import DeleteMenuItemDialog from '../Shared/portals/DeleteMenuItemDialog';
+import EditMenuItem from '../Shared/portals/EditMenuItem';
 
 export interface MenuActionsProps {
   id: string;
@@ -12,7 +13,7 @@ export interface MenuActionsProps {
 
 const MenuActions = ({ id, isVisible }: MenuActionsProps) => {
   return (
-    <div className='flex items-center justify-end gap-2'>
+    <div className='flex-center gap-2'>
       <DialogTrigger
         trigger={
           <Tooltip title='Edit Details'>
@@ -27,10 +28,11 @@ const MenuActions = ({ id, isVisible }: MenuActionsProps) => {
         }
         ariaLabel='Edit Menu Item Dialog'
         title='Edit Menu Item'
+        willOpen={isVisible ?? false}
         showCloseIcon={true}
         maxWidth='sm'
       >
-        Edit Menujiji
+        <EditMenuItem id={id} />
       </DialogTrigger>
 
       <MenuItemVisibilityDialog id={id} isVisible={isVisible} />

@@ -4,6 +4,8 @@ import Modal from '@mui/material/Modal';
 import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
 import { MdDelete } from 'react-icons/md';
+import { useDeleteMenuItemMutation } from '@/features/menuItems/menuItemsApi';
+import { toast } from 'react-toastify';
 
 const style = {
   position: 'absolute',
@@ -19,10 +21,19 @@ const style = {
 };
 
 export default function DeleteMenuItemDialog({ id }: { id: string }) {
+  const [deleteMenuItem, { isLoading }] = useDeleteMenuItemMutation();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const handleDelete = async () => {
+    try {
+      await deleteMenuItem(id).unwrap();
+      toast.success('Restaurant Deleted Successfully.');
+      handleClose();
+    } catch (err) {
+      toast.error('Something Went Wrong. Please Try again.');
+    }
+  };
   return (
     <div>
       <Tooltip title='Delete'>
@@ -57,6 +68,8 @@ export default function DeleteMenuItemDialog({ id }: { id: string }) {
                   borderRadius: '20px',
                 },
               }}
+              onClick={handleDelete}
+              disabled={isLoading}
             >
               Yes
             </Button>

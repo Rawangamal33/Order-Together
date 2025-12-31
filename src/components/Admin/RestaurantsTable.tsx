@@ -4,8 +4,9 @@ import type { Restaurant } from '@/types/restaurants.types';
 import GlobalTable from '../Shared/ui/GlobalTable';
 import RestaurantName from './RestaurantName';
 import type { ReactNode } from 'react';
-import DialogTrigger from '../Shared/Dialog/DialogTrigger';
 import CreateRestaurant from '../Shared/portals/CreateRestaurant';
+import EmptyDataTable from '../Shared/ui/EmptyDataTable';
+import ErrorScope from '../Shared/ui/ErrorScope';
 
 export interface RestauranrTableProps {
   renderControls?: (row: Restaurant) => ReactNode;
@@ -61,49 +62,12 @@ const RestaurantsTable = ({ renderControls }: RestauranrTableProps) => {
     });
   }
 
-  const emptyDataState = (
-    <>
-      <p className='text-center mt-5 text-xl font-semibold text-blue-600'>
-        No Restaurants Yet
-      </p>
-      <p className='text-center text-lg  text-gray-500'>
-        Get started by creating your First Restaurant.
-      </p>
-
-      <div className='mb-5'>
-        <DialogTrigger
-          trigger={
-            <button className='flex-center gap-2 mx-auto mt-4 shadow-md py-2 px-4 border border-gray-300 hover:bg-gray-100 rounded-md'>
-              <span className='font-sans text-gray-600 font-semibold'>
-                Add new Restaurant
-              </span>
-            </button>
-          }
-          ariaLabel='Add Restaurant Dialog'
-          title='Create New Restaurant'
-          showCloseIcon={true}
-          maxWidth='sm'
-        >
-          <CreateRestaurant />
-        </DialogTrigger>
-      </div>
-    </>
-  );
-
   if (!isLoading && isError) {
     return (
-      <div className='text-center py-8 text-red-600'>
-        <p className='text-lg font-semibold'>Failed to load restaurants</p>
-        <p className='text-sm text-red-500'>
-          {(error as any)?.title || 'Something Went Wrong'}
-        </p>
-        <button
-          onClick={() => window.location.reload()}
-          className='mt-4 px-4 py-2 bg-red-600 text-white rounded cursor-pointer'
-        >
-          Retry
-        </button>
-      </div>
+      <ErrorScope
+        status={(error as any)?.status}
+        message={(error as any)?.data?.title}
+      />
     );
   }
 
@@ -116,7 +80,17 @@ const RestaurantsTable = ({ renderControls }: RestauranrTableProps) => {
         row.isVisible === false ? 'hidden-row' : undefined
       }
       isLoading={isLoading}
-      emptyDataState={emptyDataState}
+      emptyDataState={
+        <EmptyDataTable
+          ariaLabel='Add Restaurant Dialog'
+          title='Create New Restaurant'
+          headText='No Restaurants Yet'
+          text=' Get started by creating your First Restaurant.'
+          btnText='Add new Restaurant'
+        >
+          <CreateRestaurant />
+        </EmptyDataTable>
+      }
     />
   );
 };

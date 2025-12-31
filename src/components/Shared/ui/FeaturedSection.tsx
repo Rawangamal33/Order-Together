@@ -3,6 +3,10 @@ import { FaLink } from 'react-icons/fa';
 import { TbMoneybag } from 'react-icons/tb';
 import { Element } from 'react-scroll';
 import { FaCircleCheck } from 'react-icons/fa6';
+import { NavLink } from 'react-router-dom';
+import logo from '../../../assets/image.png';
+import googleIcon from '../../../assets/Google-Play-icon-logo.png';
+import phoneImg from '../../../assets/footer-illustration.png';
 
 const FeaturedSection = () => {
   const featuresData = [
@@ -130,6 +134,35 @@ const FeaturedSection = () => {
           </div>
         </div>
       </div>
+      <Element name='getApp'>
+        <div className='flex flex-col items-center gap-6 pb-20'>
+          <div className='text-red-600 flex-center gap-4'>
+            <img src={logo} className='sm:w-10 w-9' alt='logo' />
+            <h3 className='font-semibold sm:text-3xl text-2xl'>
+              Join Us On App
+            </h3>
+          </div>
+          <div className='sm:flex-row sm:justify-between sm:items-center sm:gap-0 flex flex-col items-center gap-4'>
+            <img src={phoneImg} alt='phone image' className='sm:w-60 w-50' />
+            <NavLink
+              to='https://expo.dev/accounts/abdelrahman_aziz/projects/order-together/builds/106a53a8-7ed9-4bfb-a805-17986b5f9841'
+              className='rounded-sm py-1 ps-1 pe-3 bg-gray-950 flex items-center text-white'
+              target='_blank'
+            >
+              <img src={googleIcon} alt='google play' className='w-10' />
+              <div>
+                <p className='text-[9px] mt-0.5 -mb-1'>GET IT ON</p>
+                <p
+                  className='font-sans sm:text-[17px]
+                text-[15px]'
+                >
+                  Google Play
+                </p>
+              </div>
+            </NavLink>
+          </div>
+        </div>
+      </Element>
     </Element>
   );
 };
