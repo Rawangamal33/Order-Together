@@ -20,7 +20,7 @@ const RestaurantActions = ({
   isVisible,
 }: RestaurantActionsProps) => {
   return (
-    <div className='flex items-center justify-end gap-2'>
+    <div className='flex-center gap-2'>
       <Tooltip title='Show Menu'>
         <NavLink
           to={`/admin/restaurants/${id}/menu-items`}

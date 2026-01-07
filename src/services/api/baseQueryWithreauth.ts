@@ -57,19 +57,15 @@ export const baseQueryWithReauth: BaseQueryFn<
       api.dispatch(logoutRedux());
       api.dispatch(apiSlice.util.resetApiState());
 
-      try {
-        await baseQuery(
-          {
-            url: 'auth/logout',
-            method: 'POST',
-            body: { token: null },
-          },
-          api,
-          extraOptions
-        );
-      } catch (error) {
-        console.error('Logout failed:', error);
-      }
+      await baseQuery(
+        {
+          url: 'auth/logout',
+          method: 'POST',
+          body: { token: null },
+        },
+        api,
+        extraOptions
+      );
     }
   }
 
