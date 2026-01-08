@@ -29,7 +29,8 @@ export const baseQueryWithReauth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result?.meta?.response?.status === 401) {
+  const accessToken = (api.getState() as RootState).auth.accessToken;
+  if (result?.meta?.response?.status === 401 && accessToken) {
     console.log('Token expired, attempting refresh...');
 
     const refreshResult = await baseQuery(
@@ -60,9 +61,6 @@ export const baseQueryWithReauth: BaseQueryFn<
     } else {
       console.log('Refresh failed, logging out');
       toast.error('Session expired. Please login again.');
-      api.dispatch(logoutRedux());
-      api.dispatch(apiSlice.util.resetApiState());
-
       await baseQuery(
         {
           url: 'auth/logout',
@@ -72,6 +70,8 @@ export const baseQueryWithReauth: BaseQueryFn<
         api,
         extraOptions
       );
+      api.dispatch(logoutRedux());
+      api.dispatch(apiSlice.util.resetApiState());
     }
   }
 
