@@ -1,6 +1,8 @@
+import type { AppDispatch } from '@/app/store';
 import { logoUrlSchema, userNameSchema } from '@/components/Shared/Schemas';
 import { Button } from '@/components/Shared/ui/button';
 import ErrorPage from '@/components/Shared/ui/ErrorPage';
+import { updateUser } from '@/features/auth/authSlice';
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
@@ -14,16 +16,18 @@ import Tooltip from '@mui/material/Tooltip';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MdDelete } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import z from 'zod';
 
 const UpdateProfile = () => {
   const {
-    data,
+    data: userData,
     isFetching: isLoadingInitialData,
     isError,
     error,
   } = useGetProfileQuery();
+  const dispatch = useDispatch<AppDispatch>();
   const {
     uploadFile,
     isLoading: isUploadingFile,
@@ -54,17 +58,17 @@ const UpdateProfile = () => {
     mode: 'onChange',
   });
   useEffect(() => {
-    if (data?.user) {
+    if (userData?.user) {
       reset({
-        firstName: data.user.firstName,
-        lastName: data.user.lastName,
-        avatarUrl: data.user.avatarUrl ?? undefined,
+        firstName: userData.user.firstName,
+        lastName: userData.user.lastName,
+        avatarUrl: userData.user.avatarUrl ?? undefined,
       });
-      if (data.user.avatarUrl) {
-        setPreviewImg(data.user.avatarUrl);
+      if (userData.user.avatarUrl) {
+        setPreviewImg(userData.user.avatarUrl);
       }
     }
-  }, [data, reset]);
+  }, [userData, reset]);
 
   if (!isLoadingInitialData && isError) {
     return (
@@ -88,7 +92,7 @@ const UpdateProfile = () => {
     if (!selectedFile) return;
     const url = await uploadFile(selectedFile);
     setPreviewImg(url);
-    reset({ ...data, avatarUrl: url });
+    reset({ ...userData, avatarUrl: url });
   };
 
   const onSubmit = async (data: FormData) => {
@@ -98,6 +102,13 @@ const UpdateProfile = () => {
         lastName: data.lastName.trim(),
         avatarUrl: data.avatarUrl ?? null,
       }).unwrap();
+      dispatch(
+        updateUser({
+          firstName: data.firstName.trim(),
+          lastName: data.lastName.trim(),
+          avatarUrl: data.avatarUrl ?? null,
+        })
+      );
       toast.success('Profile has been Updated Successfully.');
     } catch (err: any) {
       if (!err?.data) {
@@ -143,7 +154,7 @@ const UpdateProfile = () => {
               ) : (
                 <div className='sm:w-12 sm:h-12 w-10 h-10 rounded-full flex-center font-bold text-xs text-white shadow-sm bg-gradient-to-br from-gray-600 to-gray-800'>
                   {getInitials(
-                    data?.user?.firstName + ' ' + data?.user?.lastName
+                    userData?.user?.firstName + ' ' + userData?.user?.lastName
                   )}
                 </div>
               )}
@@ -173,7 +184,7 @@ const UpdateProfile = () => {
                 }}
                 onClick={() => {
                   setPreviewImg('');
-                  reset({ ...data, avatarUrl: undefined });
+                  reset({ ...userData, avatarUrl: undefined });
                 }}
               >
                 <MdDelete />

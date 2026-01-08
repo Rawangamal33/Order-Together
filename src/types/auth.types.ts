@@ -8,7 +8,7 @@ export interface User {
   firstName: string | null;
   lastName: string | null;
   email: string | null;
-  avatrUrl: string | null;
+  avatarUrl: string | null;
   role: string[];
 }
 
@@ -18,9 +18,12 @@ export interface LoginResponse {
   user: User;
 }
 
-export interface InitialStateProps extends LoginResponse {}
+export interface InitialStateProps {
+  accessToken: string | null;
+  user: User;
+}
 
-export interface CredentialsType extends LoginResponse {}
+export interface CredentialsType extends InitialStateProps {}
 
 export interface RegisterRequest {
   firstName: string;
@@ -29,7 +32,10 @@ export interface RegisterRequest {
   password: string;
 }
 
-export interface RefreshResponse extends LoginResponse {}
+export interface RefreshResponse {
+  accessToken: string | null;
+  refreshToken: string | null;
+}
 
 export interface RefreshRequest {
   token: string | null;

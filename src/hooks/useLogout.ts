@@ -1,5 +1,4 @@
 import { useLogoutMutation } from '@/features/auth/authApi';
-import useAuth from './useAuth';
 import { useDispatch } from 'react-redux';
 import { logoutRedux } from '@/features/auth/authSlice';
 import type { AppDispatch } from '@/app/store';
@@ -11,13 +10,11 @@ const useLogout = () => {
   const [logoutMutationout, { isLoading }] = useLogoutMutation();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { refreshToken } = useAuth();
 
   const logout = async () => {
     try {
-      if (refreshToken) {
-        await logoutMutationout({ token: refreshToken }).unwrap();
-      }
+      // await logoutMutationout({ token: null }).unwrap();
+
       dispatch(logoutRedux());
       dispatch(api.util.resetApiState());
       toast.success('Logged out successfully.');

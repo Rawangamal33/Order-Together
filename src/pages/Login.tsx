@@ -44,7 +44,12 @@ const Login = () => {
         email: formData.email.trim(),
         password: formData.password.trim(),
       }).unwrap();
-      dispatch(setCredentials(response));
+      dispatch(
+        setCredentials({
+          accessToken: response.accessToken,
+          user: response.user,
+        })
+      );
       toast.success('Logged in successfully.');
       reset();
       const userRoles = response.user.role || [];

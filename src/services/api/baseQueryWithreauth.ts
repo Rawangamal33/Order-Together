@@ -47,8 +47,14 @@ export const baseQueryWithReauth: BaseQueryFn<
     if (refreshResult?.data) {
       console.log('Token refreshed successfully');
       const returnedResult = refreshResult.data as RefreshResponse;
+      const user = (api.getState() as RootState).auth.user;
 
-      api.dispatch(setCredentials(returnedResult));
+      api.dispatch(
+        setCredentials({
+          accessToken: returnedResult.accessToken,
+          user,
+        })
+      );
 
       result = await baseQuery(args, api, extraOptions);
     } else {

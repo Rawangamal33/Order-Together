@@ -16,12 +16,13 @@ import { getInitials } from '@/utils/ImgPlaceholder';
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
-  const { accessToken } = useAuth();
+  const { accessToken, user } = useAuth();
 
   const { logout, isLoading } = useLogout();
   const { data } = useGetProfileQuery(undefined, { skip: !accessToken });
-  const roles = data?.user?.role;
-  const userImg = data?.user?.avatarUrl;
+  const dispayedUser = data?.user ?? user;
+  const roles = dispayedUser?.role;
+  const userImg = dispayedUser?.avatarUrl;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -113,7 +114,7 @@ const NavBar = () => {
                 ) : (
                   <div className='w-8 h-8 rounded-full flex-center font-bold text-xs text-white shadow-sm bg-gradient-to-br from-gray-600 to-gray-800'>
                     {getInitials(
-                      data?.user?.firstName + ' ' + data?.user?.lastName
+                      dispayedUser.firstName + ' ' + dispayedUser.lastName
                     )}
                   </div>
                 )}
@@ -242,7 +243,7 @@ const NavBar = () => {
                   ) : (
                     <div className='w-7 h-7 ml-3 rounded-full flex-center font-bold text-[10px] px-3 text-white shadow-sm bg-gradient-to-br from-gray-600 to-gray-800'>
                       {getInitials(
-                        data?.user?.firstName + ' ' + data?.user?.lastName
+                        dispayedUser.firstName + ' ' + dispayedUser.lastName
                       )}
                     </div>
                   )}
