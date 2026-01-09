@@ -15,7 +15,10 @@ import Tooltip from '@mui/material/Tooltip';
 import { MdDelete } from 'react-icons/md';
 import IconButton from '@mui/material/IconButton';
 import { toast } from 'react-toastify';
-import { logoUrlSchema, restaurantNameSchema } from '../Schemas';
+import {
+  logoUrlSchema,
+  restaurantNameSchema,
+} from '@/features/restuarants/schemas/restaurants.schema';
 
 export interface EditRestaurantProps {
   id: string;

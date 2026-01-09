@@ -1,4 +1,4 @@
-import { formatRelativeDate } from '@/utils/formRelativeDate';
+import { formatRelativeDate } from '@/lib/formRelativeDate-utils';
 
 export interface MenuNameProps {
   name: string;

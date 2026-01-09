@@ -1,11 +1,6 @@
 import { useDialogContext } from '@/context/DialogProvider';
 import { useEffect, useMemo } from 'react';
 import z from 'zod';
-import {
-  descriptionMenuSchema,
-  menuNameSchema,
-  priceMenuSchema,
-} from '../Schemas';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '../ui/button';
@@ -15,6 +10,11 @@ import {
 } from '@/features/menuItems/menuItemsApi';
 import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
+import {
+  descriptionMenuSchema,
+  menuNameSchema,
+  priceMenuSchema,
+} from '@/features/menuItems/schemas/menuItems.schema';
 
 const EditMenuItem = ({ id }: { id: string }) => {
   const { data, isLoading: isLoadingDetails } = useGetMenuDetailsByIdQuery(id);

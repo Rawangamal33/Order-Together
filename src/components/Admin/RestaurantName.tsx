@@ -1,5 +1,5 @@
-import { formatDate } from '@/utils/formRelativeDate';
-import { getInitials } from '@/utils/ImgPlaceholder';
+import { formatDate } from '@/lib/formRelativeDate-utils';
+import { getInitials } from '@/lib/ImgPlaceholder-utils';
 
 export interface RestaurantNameProps {
   logoUrl: string | null;

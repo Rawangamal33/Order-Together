@@ -3,7 +3,7 @@ import type {
   GetProfileResponse,
   UpdateProfileRequest,
   UpdateProfileResponse,
-} from '@/types/profile.types';
+} from '@/features/profile/types/profile.types';
 
 const profileApi = api.injectEndpoints({
   endpoints: (builder) => ({

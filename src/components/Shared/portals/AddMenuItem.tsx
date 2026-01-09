@@ -2,15 +2,15 @@ import { usePostMenuItemMutation } from '@/features/menuItems/menuItemsApi';
 import { Button } from '../ui/button';
 import { useDialogContext } from '@/context/DialogProvider';
 import { useMemo } from 'react';
-import {
-  descriptionMenuSchema,
-  menuNameSchema,
-  priceMenuSchema,
-} from '../Schemas';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
+import {
+  descriptionMenuSchema,
+  menuNameSchema,
+  priceMenuSchema,
+} from '@/features/menuItems/schemas/menuItems.schema';
 
 const AddMenuItem = ({ id }: { id: string }) => {
   const { setIsOpen } = useDialogContext();

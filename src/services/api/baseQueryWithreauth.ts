@@ -1,7 +1,7 @@
 import type { RootState } from '@/app/store';
 import { logoutRedux, setCredentials } from '@/features/auth/authSlice';
 import { api as apiSlice } from './api';
-import type { RefreshResponse } from '@/types/auth.types';
+import type { RefreshResponse } from '@/features/auth/types/auth.types';
 import {
   fetchBaseQuery,
   type BaseQueryFn,

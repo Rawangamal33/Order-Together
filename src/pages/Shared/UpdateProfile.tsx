@@ -1,14 +1,15 @@
 import type { AppDispatch } from '@/app/store';
-import { logoUrlSchema, userNameSchema } from '@/components/Shared/Schemas';
 import { Button } from '@/components/Shared/ui/button';
 import ErrorPage from '@/components/Shared/ui/ErrorPage';
 import { updateUser } from '@/features/auth/authSlice';
+import { userNameSchema } from '@/features/auth/schemas/auth.schema';
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
 } from '@/features/profile/profileApi';
+import { logoUrlSchema } from '@/features/restuarants/schemas/restaurants.schema';
 import useFileUpload from '@/hooks/useFileUpload';
-import { getInitials } from '@/utils/ImgPlaceholder';
+import { getInitials } from '@/lib/ImgPlaceholder-utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';

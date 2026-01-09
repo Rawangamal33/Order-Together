@@ -1,11 +1,11 @@
 import { useGetRestaurantsQuery } from '@/features/restuarants/restaurantsApi';
-import type { CellProps } from '../Shared/ui/GlobalTable';
-import type { Restaurant } from '@/types/restaurants.types';
-import GlobalTable from '../Shared/ui/GlobalTable';
+import type { CellProps } from '../Shared/Tables/GlobalTable';
+import type { Restaurant } from '@/features/restuarants/types/restaurants.types';
+import GlobalTable from '../Shared/Tables/GlobalTable';
 import RestaurantName from './RestaurantName';
 import type { ReactNode } from 'react';
 import CreateRestaurant from '../Shared/portals/CreateRestaurant';
-import EmptyDataTable from '../Shared/ui/EmptyDataTable';
+import EmptyDataTable from '../Shared/Tables/EmptyDataTable';
 import ErrorScope from '../Shared/ui/ErrorScope';
 
 export interface RestauranrTableProps {

@@ -12,7 +12,7 @@ import {
   emailSchema,
   passSchema,
   userNameSchema,
-} from '@/components/Shared/Schemas';
+} from '@/features/auth/schemas/auth.schema';
 
 const Register = () => {
   const navigate = useNavigate();

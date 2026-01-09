@@ -4,7 +4,7 @@ import DialogTrigger from '@/components/Shared/Dialog/DialogTrigger';
 import CreateRestaurant from '@/components/Shared/portals/CreateRestaurant';
 import { Button } from '@/components/Shared/ui/button';
 import { WithDialogContext } from '@/context/DialogProvider';
-import type { Restaurant } from '@/types/restaurants.types';
+import type { Restaurant } from '@/features/restuarants/types/restaurants.types';
 import { FaPlus } from 'react-icons/fa6';
 
 const Dashboard = () => {

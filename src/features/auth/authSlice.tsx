@@ -1,4 +1,7 @@
-import type { CredentialsType, InitialStateProps } from '@/types/auth.types';
+import type {
+  CredentialsType,
+  InitialStateProps,
+} from '@/features/auth/types/auth.types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: InitialStateProps = {

@@ -1,4 +1,4 @@
-import unAuthorizedImg from '../assets/401 Error Unauthorized-pana (1).svg';
+import unAuthorizedImg from '../../assets/401 Error Unauthorized-pana (1).svg';
 
 const Unauthorized = () => {
   return (

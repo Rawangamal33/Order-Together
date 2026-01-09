@@ -1,5 +1,5 @@
 import { api } from '@/services/api/api';
-import type { MediaFileUploadResponse } from '@/types/media.types';
+import type { MediaFileUploadResponse } from '@/features/media/types/media.types';
 
 export const mediaApi = api.injectEndpoints({
   endpoints: (builder) => ({

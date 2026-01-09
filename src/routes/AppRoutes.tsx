@@ -1,15 +1,15 @@
 import AnimationRouting from '@/animation/AnimationRouting';
 import MainLayout from '@/components/Shared/layouts/MainLayout';
-import Home from '@/pages/Home';
-import Unauthorized from '@/pages/Unauthorized';
-import UpdateProfile from '@/pages/UpdateProfile';
+import Home from '@/pages/Shared/Home';
+import Unauthorized from '@/pages/Shared/Unauthorized';
+import UpdateProfile from '@/pages/Shared/UpdateProfile';
 import { AnimatePresence } from 'framer-motion';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import ProtectedRoutes from './ProtectedRoutes';
-import NotFound from '@/pages/NotFound';
+import NotFound from '@/pages/Shared/NotFound';
 import Dashboard from '@/pages/Admin/Dashboard';
-import Login from '@/pages/Login';
-import Register from '@/pages/Register';
+import Login from '@/pages/Shared/Login';
+import Register from '@/pages/Shared/Register';
 import MenuPage from '@/pages/Admin/MenuPage';
 
 const AppRoutes = () => {

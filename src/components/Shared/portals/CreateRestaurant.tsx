@@ -9,10 +9,10 @@ import useFileUpload from '@/hooks/useFileUpload';
 import CircularProgress from '@mui/material/CircularProgress';
 import { usePostRestaurantMutation } from '@/features/restuarants/restaurantsApi';
 import { toast } from 'react-toastify';
-import { restaurantNameSchema } from '../Schemas';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import { MdDelete } from 'react-icons/md';
+import { restaurantNameSchema } from '@/features/restuarants/schemas/restaurants.schema';
 
 const CreateRestaurant = () => {
   const { setIsOpen } = useDialogContext();

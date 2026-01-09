@@ -6,7 +6,7 @@ import type {
   UpdateMenuItemRequest,
   UpdateMenuItemResponse,
   updateMenuItemVisibilityRequest,
-} from '@/types/menuItems.types';
+} from '@/features/menuItems/types/menuItems.types';
 
 const menuItemsApi = api.injectEndpoints({
   endpoints: (builder) => ({

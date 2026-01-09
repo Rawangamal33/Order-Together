@@ -11,7 +11,7 @@ import { IoMdEye } from 'react-icons/io';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { emailSchema, passSchema } from '@/components/Shared/Schemas';
+import { emailSchema, passSchema } from '@/features/auth/schemas/auth.schema';
 
 const Login = () => {
   const location = useLocation();

@@ -6,7 +6,7 @@ import type {
   UpdateRestaurantRequest,
   UpdateRestaurantResponse,
   UpdateRestVisibility,
-} from '@/types/restaurants.types';
+} from '@/features/restuarants/types/restaurants.types';
 
 export const restaurantApi = api.injectEndpoints({
   endpoints: (builder) => ({

@@ -11,7 +11,7 @@ import { SiDoordash } from 'react-icons/si';
 import { FaUserPlus } from 'react-icons/fa';
 import { MdDashboard } from 'react-icons/md';
 import { useGetProfileQuery } from '@/features/profile/profileApi';
-import { getInitials } from '@/utils/ImgPlaceholder';
+import { getInitials } from '@/lib/ImgPlaceholder-utils';
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);

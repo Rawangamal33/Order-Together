@@ -6,7 +6,7 @@ import {
   type RefreshRequest,
   type RefreshResponse,
   type RegisterRequest,
-} from '@/types/auth.types';
+} from '@/features/auth/types/auth.types';
 
 export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
