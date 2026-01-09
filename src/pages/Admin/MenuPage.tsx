@@ -1,9 +1,9 @@
 import MenuActions from '@/components/Admin/MenuActions';
 import MenuTable from '@/components/Admin/MenuTable';
-import DialogTrigger from '@/components/Shared/Dialog/DialogTrigger';
-import AddMenuItem from '@/components/Shared/portals/AddMenuItem';
-import { Button } from '@/components/Shared/ui/button';
-import ErrorPage from '@/components/Shared/ui/ErrorPage';
+import DialogTrigger from '@/components/Dialogs/DialogTrigger';
+import AddMenuItem from '@/components/portals/AddMenuItem';
+import { Button } from '@/components/ui/button';
+import ErrorPage from '@/components/ui/ErrorPage';
 import { WithDialogContext } from '@/context/DialogProvider';
 import { useGetMenuItemsQuery } from '@/features/menuItems/menuItemsApi';
 import type { MenuItem } from '@/features/menuItems/types/menuItems.types';

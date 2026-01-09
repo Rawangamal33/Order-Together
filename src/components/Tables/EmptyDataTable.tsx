@@ -1,4 +1,4 @@
-import DialogTrigger from '../Dialog/DialogTrigger';
+import DialogTrigger from '../Dialogs/DialogTrigger';
 
 export interface EmptyDataTableProps {
   headText: string;

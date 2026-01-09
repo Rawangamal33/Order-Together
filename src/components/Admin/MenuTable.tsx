@@ -1,8 +1,8 @@
 import type { MenuItem } from '@/features/menuItems/types/menuItems.types';
-import GlobalTable, { type CellProps } from '../Shared/Tables/GlobalTable';
+import GlobalTable, { type CellProps } from '../Tables/GlobalTable';
 import MenuName from './MenuName';
-import AddMenuItem from '../Shared/portals/AddMenuItem';
-import EmptyDataTable from '../Shared/Tables/EmptyDataTable';
+import EmptyDataTable from '../Tables/EmptyDataTable';
+import AddMenuItem from '../portals/AddMenuItem';
 
 export interface MenuTableProps {
   menuItems: MenuItem[];

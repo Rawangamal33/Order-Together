@@ -1,12 +1,12 @@
 import { VscLayoutMenubar } from 'react-icons/vsc';
 import Tooltip from '@mui/material/Tooltip';
 import { RiEditBoxLine } from 'react-icons/ri';
-import DialogTrigger from '../Shared/Dialog/DialogTrigger';
+import DialogTrigger from '../Dialogs/DialogTrigger';
 import { WithDialogContext } from '@/context/DialogProvider';
-import EditRestaurant from '../Shared/portals/EditRestaurant';
-import RestaurantVisibilityDialog from '../Shared/portals/RestaurantVisibilityDialog';
-import DeleteRestaurantDialog from '../Shared/portals/DeleteRestaurantDialog';
 import { NavLink } from 'react-router-dom';
+import EditRestaurant from '../portals/EditRestaurant';
+import RestaurantVisibilityDialog from '../portals/RestaurantVisibilityDialog';
+import DeleteRestaurantDialog from '../portals/DeleteRestaurantDialog';
 
 export interface RestaurantActionsProps {
   id: string;

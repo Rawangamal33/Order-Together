@@ -1,4 +1,4 @@
-import type { DialogRefProps } from '@/components/Shared/Dialog/DialogTrigger';
+import type { DialogRefProps } from '@/components/Dialogs/DialogTrigger';
 import {
   createContext,
   useContext,

@@ -1,12 +1,12 @@
 import { useGetRestaurantsQuery } from '@/features/restuarants/restaurantsApi';
-import type { CellProps } from '../Shared/Tables/GlobalTable';
+import type { CellProps } from '../Tables/GlobalTable';
 import type { Restaurant } from '@/features/restuarants/types/restaurants.types';
-import GlobalTable from '../Shared/Tables/GlobalTable';
+import GlobalTable from '../Tables/GlobalTable';
 import RestaurantName from './RestaurantName';
 import type { ReactNode } from 'react';
-import CreateRestaurant from '../Shared/portals/CreateRestaurant';
-import EmptyDataTable from '../Shared/Tables/EmptyDataTable';
-import ErrorScope from '../Shared/ui/ErrorScope';
+import EmptyDataTable from '../Tables/EmptyDataTable';
+import ErrorScope from '../ui/ErrorScope';
+import CreateRestaurant from '../portals/CreateRestaurant';
 
 export interface RestauranrTableProps {
   renderControls?: (row: Restaurant) => ReactNode;

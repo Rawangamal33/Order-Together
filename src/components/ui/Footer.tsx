@@ -1,4 +1,4 @@
-import logo from '../../../assets/image.png';
+import logo from '../../assets/image.png';
 const Footer = () => {
   return (
     <div className='bg-gray-900 h-[110px] flex flex-col items-center justify-center gap-4'>

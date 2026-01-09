@@ -1,6 +1,6 @@
 import type { AppDispatch } from '@/app/store';
-import { Button } from '@/components/Shared/ui/button';
-import ErrorPage from '@/components/Shared/ui/ErrorPage';
+import { Button } from '@/components/ui/button';
+import ErrorPage from '@/components/ui/ErrorPage';
 import { updateUser } from '@/features/auth/authSlice';
 import { userNameSchema } from '@/features/auth/schemas/auth.schema';
 import {

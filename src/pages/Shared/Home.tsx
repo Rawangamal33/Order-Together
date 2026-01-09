@@ -1,6 +1,6 @@
-import { Button } from '@/components/Shared/ui/button';
-import FeaturedSection from '@/components/Shared/ui/FeaturedSection';
-import Footer from '@/components/Shared/ui/Footer';
+import { Button } from '@/components/ui/button';
+import FeaturedSection from '@/components/ui/FeaturedSection';
+import Footer from '@/components/ui/Footer';
 import { Link as ScrollLink } from 'react-scroll';
 
 const Home = () => {

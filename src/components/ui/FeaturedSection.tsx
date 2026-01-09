@@ -4,9 +4,9 @@ import { TbMoneybag } from 'react-icons/tb';
 import { Element } from 'react-scroll';
 import { FaCircleCheck } from 'react-icons/fa6';
 import { NavLink } from 'react-router-dom';
-import logo from '../../../assets/image.png';
-import googleIcon from '../../../assets/Google-Play-icon-logo.png';
-import phoneImg from '../../../assets/footer-illustration.png';
+import logo from '../../assets/image.png';
+import googleIcon from '../../assets/Google-Play-icon-logo.png';
+import phoneImg from '../../assets/footer-illustration.png';
 
 const FeaturedSection = () => {
   const featuresData = [

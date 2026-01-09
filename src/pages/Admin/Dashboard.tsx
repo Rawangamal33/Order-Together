@@ -1,8 +1,8 @@
 import RestaurantActions from '@/components/Admin/RestaurantActions';
 import RestaurantsTable from '@/components/Admin/RestaurantsTable';
-import DialogTrigger from '@/components/Shared/Dialog/DialogTrigger';
-import CreateRestaurant from '@/components/Shared/portals/CreateRestaurant';
-import { Button } from '@/components/Shared/ui/button';
+import DialogTrigger from '@/components/Dialogs/DialogTrigger';
+import CreateRestaurant from '@/components/portals/CreateRestaurant';
+import { Button } from '@/components/ui/button';
 import { WithDialogContext } from '@/context/DialogProvider';
 import type { Restaurant } from '@/features/restuarants/types/restaurants.types';
 import { FaPlus } from 'react-icons/fa6';

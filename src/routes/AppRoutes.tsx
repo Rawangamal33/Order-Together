@@ -1,5 +1,4 @@
 import AnimationRouting from '@/animation/AnimationRouting';
-import MainLayout from '@/components/Shared/layouts/MainLayout';
 import Home from '@/pages/Shared/Home';
 import Unauthorized from '@/pages/Shared/Unauthorized';
 import UpdateProfile from '@/pages/Shared/UpdateProfile';
@@ -11,6 +10,7 @@ import Dashboard from '@/pages/Admin/Dashboard';
 import Login from '@/pages/Shared/Login';
 import Register from '@/pages/Shared/Register';
 import MenuPage from '@/pages/Admin/MenuPage';
+import MainLayout from '@/components/layouts/MainLayout';
 
 const AppRoutes = () => {
   const location = useLocation();

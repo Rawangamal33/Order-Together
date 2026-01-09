@@ -1,10 +1,10 @@
 import Tooltip from '@mui/material/Tooltip';
 import { RiEditBoxLine } from 'react-icons/ri';
-import DialogTrigger from '../Shared/Dialog/DialogTrigger';
+import DialogTrigger from '../Dialogs/DialogTrigger';
 import { WithDialogContext } from '@/context/DialogProvider';
-import MenuItemVisibilityDialog from '../Shared/portals/MenuItemVisibilityDialog';
-import DeleteMenuItemDialog from '../Shared/portals/DeleteMenuItemDialog';
-import EditMenuItem from '../Shared/portals/EditMenuItem';
+import EditMenuItem from '../portals/EditMenuItem';
+import MenuItemVisibilityDialog from '../portals/MenuItemVisibilityDialog';
+import DeleteMenuItemDialog from '../portals/DeleteMenuItemDialog';
 
 export interface MenuActionsProps {
   id: string;
