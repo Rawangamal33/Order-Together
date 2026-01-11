@@ -12,7 +12,6 @@ import { toast } from 'react-toastify';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL,
-  credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const accessToken = (getState() as RootState).auth.accessToken;
     if (accessToken) {
@@ -30,6 +29,7 @@ export const baseQueryWithReauth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
 
   const accessToken = (api.getState() as RootState).auth.accessToken;
+  const refreshToken = (api.getState() as RootState).auth.refreshToken;
   if (result?.meta?.response?.status === 401 && accessToken) {
     console.log('Token expired, attempting refresh...');
 
@@ -38,7 +38,7 @@ export const baseQueryWithReauth: BaseQueryFn<
         url: 'auth/refresh',
         method: 'POST',
         body: {
-          token: null,
+          token: refreshToken,
         },
       },
       api,
@@ -48,14 +48,8 @@ export const baseQueryWithReauth: BaseQueryFn<
     if (refreshResult?.data) {
       console.log('Token refreshed successfully');
       const returnedResult = refreshResult.data as RefreshResponse;
-      const user = (api.getState() as RootState).auth.user;
 
-      api.dispatch(
-        setCredentials({
-          accessToken: returnedResult.accessToken,
-          user,
-        })
-      );
+      api.dispatch(setCredentials(returnedResult));
 
       result = await baseQuery(args, api, extraOptions);
     } else {
@@ -65,7 +59,7 @@ export const baseQueryWithReauth: BaseQueryFn<
         {
           url: 'auth/logout',
           method: 'POST',
-          body: { token: null },
+          body: { token: refreshToken },
         },
         api,
         extraOptions

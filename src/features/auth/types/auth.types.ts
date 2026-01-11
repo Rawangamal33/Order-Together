@@ -18,12 +18,9 @@ export interface LoginResponse {
   user: User;
 }
 
-export interface InitialStateProps {
-  accessToken: string | null;
-  user: User;
-}
+export interface InitialStateProps extends LoginResponse {}
 
-export interface CredentialsType extends InitialStateProps {}
+export interface CredentialsType extends LoginResponse {}
 
 export interface RegisterRequest {
   firstName: string;
@@ -32,10 +29,7 @@ export interface RegisterRequest {
   password: string;
 }
 
-export interface RefreshResponse {
-  accessToken: string | null;
-  refreshToken: string | null;
-}
+export interface RefreshResponse extends LoginResponse {}
 
 export interface RefreshRequest {
   token: string | null;

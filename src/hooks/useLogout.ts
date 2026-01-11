@@ -5,15 +5,17 @@ import { persistor, type AppDispatch } from '@/app/store';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { api } from '@/services/api/api';
+import useAuth from './useAuth';
 
 const useLogout = () => {
   const [logoutMutationout, { isLoading }] = useLogoutMutation();
+  const { refreshToken } = useAuth();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const logout = async () => {
     try {
-      // await logoutMutationout({ token: null }).unwrap();
+      await logoutMutationout({ token: refreshToken }).unwrap();
       dispatch(logoutRedux());
       dispatch(api.util.resetApiState());
 
