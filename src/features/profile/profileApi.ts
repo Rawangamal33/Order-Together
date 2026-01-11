@@ -20,7 +20,18 @@ const profileApi = api.injectEndpoints({
         method: 'PUT',
         body,
       }),
-      invalidatesTags: ['profile'],
+      async onQueryStarted(updatedDataObject, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          profileApi.util.updateQueryData('getProfile', undefined, (draft) => {
+            Object.assign(draft.user, updatedDataObject);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
     }),
   }),
 });

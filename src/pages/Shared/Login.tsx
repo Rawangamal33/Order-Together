@@ -2,7 +2,7 @@ import type { AppDispatch } from '@/app/store';
 import { usePostLoginMutation } from '@/features/auth/authApi';
 import { setCredentials } from '@/features/auth/authSlice';
 import { useMemo, useState } from 'react';
-import { SiDoordash } from 'react-icons/si';
+import logo from '../../assets/image.png';
 import { useDispatch } from 'react-redux';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -78,9 +78,9 @@ const Login = () => {
   return (
     <section className='bg-[#F9FAFB] min-h-screen md:pt-38 pt-34'>
       <div className='md:max-w-[500px] sm:w-[80%] w-[90%] border shadow-xs py-10 rounded-lg bg-white sm:px-14 px-7 mx-auto'>
-        <div className='flex-center gap-2 text-red-600'>
+        <div className='flex-center gap-1.5 text-red-600'>
           <div className='md:text-3xl text-2xl'>
-            <SiDoordash />
+            <img src={logo} className='w-8 h-8 object-cover' alt='logo' />
           </div>
           <p className='md:text-xl text-lg tracking-wider font-bold'>
             OrderTogether

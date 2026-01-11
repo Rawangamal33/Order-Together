@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SiDoordash } from 'react-icons/si';
+import logo from '../../assets/image.png';
 import { usePostRegisterMutation } from '@/features/auth/authApi';
 import { toast } from 'react-toastify';
 import { FaEyeSlash } from 'react-icons/fa';
@@ -68,9 +68,9 @@ const Register = () => {
   return (
     <section className='bg-[#F9FAFB] min-h-screen pt-30 pb-10 '>
       <div className='md:max-w-[500px] sm:w-[80%] w-[90%] border shadow-xs pt-10 pb-5 rounded-lg bg-white sm:px-14 px-7 mx-auto'>
-        <div className='flex-center gap-2 text-red-600'>
+        <div className='flex-center gap-1.5 text-red-600'>
           <div className='md:text-3xl text-2xl'>
-            <SiDoordash />
+            <img src={logo} className='w-8 h-8 object-cover' alt='logo' />
           </div>
           <p className='md:text-xl text-lg tracking-wider font-bold'>
             OrderTogether
