@@ -12,7 +12,13 @@ export const restaurantApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getRestaurants: builder.query<Restaurant[], void>({
       query: () => 'admin/restaurants',
-      providesTags: ['Restaurants'],
+      providesTags: (result) =>
+        result
+          ? [
+              { type: 'Restaurants', id: 'LIST' },
+              ...result.map(({ id }) => ({ type: 'Restaurants' as const, id })),
+            ]
+          : [{ type: 'Restaurants', id: 'LIST' }],
     }),
     postRestaurant: builder.mutation<void, RestaurantRequest>({
       query: (body) => ({
@@ -20,14 +26,15 @@ export const restaurantApi = api.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['Restaurants'],
+      invalidatesTags: [{ type: 'Restaurants', id: 'LIST' }],
     }),
     getRestaurantByShortCode: builder.query<
       GetRestaurantByShortCodeResponse,
       string
     >({
       query: (shortCode) => `restaurants/${shortCode}`,
-      providesTags: ['Restaurants'],
+      providesTags: (result) =>
+        result ? [{ type: 'Restaurants', id: result.id }] : [],
     }),
     updateRestaurant: builder.mutation<
       UpdateRestaurantResponse,
@@ -38,7 +45,9 @@ export const restaurantApi = api.injectEndpoints({
         method: 'PUT',
         body,
       }),
-      invalidatesTags: ['Restaurants'],
+      invalidatesTags: (_result, _error, updatedRes) => [
+        { type: 'Restaurants', id: updatedRes.id },
+      ],
     }),
     updateRestaurantVisibility: builder.mutation<void, UpdateRestVisibility>({
       query: ({ id, isVisible }) => ({
@@ -46,14 +55,23 @@ export const restaurantApi = api.injectEndpoints({
         method: 'PATCH',
         body: { isVisible },
       }),
-      invalidatesTags: ['Restaurants'],
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: 'Restaurants', id },
+        {
+          type: 'Restaurants',
+          id: 'LIST',
+        },
+      ],
     }),
     DeleteRestaurant: builder.mutation<void, string>({
       query: (id) => ({
         url: `admin/restaurants/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Restaurants'],
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'Restaurants', id },
+        { type: 'Restaurants', id: 'LIST' },
+      ],
     }),
   }),
 });

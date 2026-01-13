@@ -12,7 +12,16 @@ const menuItemsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getMenuItems: builder.query<GetMenuItemsResponse, string>({
       query: (id) => `admin/restaurants/${id}/menu-items`,
-      providesTags: ['MenuItems'],
+      providesTags: (result) =>
+        result
+          ? [
+              { type: 'MenuItems', id: 'LIST' },
+              ...result.menuItems.map(({ id }) => ({
+                type: 'MenuItems' as const,
+                id,
+              })),
+            ]
+          : [{ type: 'MenuItems', id: 'LIST' }],
     }),
     postMenuItem: builder.mutation<void, PostMenuItemRequest>({
       query: ({ id, ...body }) => ({
@@ -20,11 +29,11 @@ const menuItemsApi = api.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['MenuItems'],
+      invalidatesTags: [{ type: 'MenuItems', id: 'LIST' }],
     }),
     GetMenuDetailsById: builder.query<GetMenuDetailsByIdResponse, string>({
       query: (id) => `admin/menu-items/${id}`,
-      providesTags: ['MenuItems'],
+      providesTags: (_result, _error, id) => [{ type: 'MenuItems', id }],
     }),
     updateMenuItem: builder.mutation<
       UpdateMenuItemResponse,
@@ -35,7 +44,7 @@ const menuItemsApi = api.injectEndpoints({
         method: 'PUT',
         body,
       }),
-      invalidatesTags: ['MenuItems'],
+      invalidatesTags: (_result, _error, { id }) => [{ type: 'MenuItems', id }],
     }),
     updateMenuItemVisibility: builder.mutation<
       void,
@@ -46,14 +55,20 @@ const menuItemsApi = api.injectEndpoints({
         method: 'PATCH',
         body,
       }),
-      invalidatesTags: ['MenuItems'],
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: 'MenuItems', id },
+        { type: 'MenuItems', id: 'LIST' },
+      ],
     }),
     deleteMenuItem: builder.mutation<void, string>({
       query: (id) => ({
         url: `admin/menu-items/${id}`,
-        method: 'Delete',
+        method: 'DELETE',
       }),
-      invalidatesTags: ['MenuItems'],
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'MenuItems', id },
+        { type: 'MenuItems', id: 'LIST' },
+      ],
     }),
   }),
 });

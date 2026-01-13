@@ -26,11 +26,7 @@ const profileApi = api.injectEndpoints({
             Object.assign(draft.user, updatedDataObject);
           })
         );
-        try {
-          await queryFulfilled;
-        } catch {
-          patchResult.undo();
-        }
+        queryFulfilled.catch(() => patchResult.undo());
       },
     }),
   }),
