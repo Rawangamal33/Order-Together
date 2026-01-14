@@ -15,6 +15,8 @@ import {
   menuNameSchema,
   priceMenuSchema,
 } from '@/features/menuItems/schemas/menuItems.schema';
+import ErrToastHandler from '../Handlers/ErrToastHandler';
+import FormButtonActions from '../ui/FormButtonActions';
 
 const EditMenuItem = ({ id }: { id: string }) => {
   const { data, isLoading: isLoadingDetails } = useGetMenuDetailsByIdQuery(id);
@@ -66,15 +68,7 @@ const EditMenuItem = ({ id }: { id: string }) => {
       setIsOpen(false);
       reset();
     } catch (err: any) {
-      if (!err?.data) {
-        toast.error('Please check Network Connection.');
-      } else if (err?.data?.status === 409) {
-        toast.error(err.data.title);
-      } else if (err?.data?.status === 400) {
-        toast.error(err.data.title);
-      } else {
-        toast.error('Something went wrong. Please try again.');
-      }
+      ErrToastHandler(err);
     }
   };
 
@@ -151,24 +145,13 @@ const EditMenuItem = ({ id }: { id: string }) => {
         </label>
       </div>
 
-      <div className='flex justify-between items-center mt-4'>
-        <Button
-          variant='outline'
-          type='button'
-          className='border-gray-300'
-          onClick={() => setIsOpen(false)}
-        >
-          Cancel
-        </Button>
-        <Button
-          type='submit'
-          size={'sm'}
-          variant='destructive'
-          disabled={!isValid || isUpdating}
-        >
-          {isUpdating ? 'Saving...' : 'Save Changes'}
-        </Button>
-      </div>
+      <FormButtonActions
+        onClose={() => setIsOpen(false)}
+        isValid={isValid}
+        isLoading={isUpdating}
+        loadingLabel='Saving...'
+        submitLabel='Save Changes'
+      />
     </form>
   );
 };

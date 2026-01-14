@@ -7,6 +7,7 @@ import { FaRegEyeSlash } from 'react-icons/fa';
 import Button from '@mui/material/Button';
 import { useUpdateMenuItemVisibilityMutation } from '@/features/menuItems/menuItemsApi';
 import { toast } from 'react-toastify';
+import ErrToastHandler from '../Handlers/ErrToastHandler';
 
 const style = {
   position: 'absolute',
@@ -45,7 +46,7 @@ export default function MenuItemVisibilityDialog({
       );
       handleClose();
     } catch (err) {
-      toast.error('Something Went Wrong. Please Try again.');
+      ErrToastHandler(err);
     }
   };
 

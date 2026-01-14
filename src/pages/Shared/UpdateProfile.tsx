@@ -1,6 +1,8 @@
 import type { AppDispatch } from '@/app/store';
+import ErrToastHandler from '@/components/Handlers/ErrToastHandler';
 import { Button } from '@/components/ui/button';
 import ErrorPage from '@/components/ui/ErrorPage';
+import FormButtonActions from '@/components/ui/FormButtonActions';
 import { updateUser } from '@/features/auth/authSlice';
 import { userNameSchema } from '@/features/auth/schemas/auth.schema';
 import {
@@ -112,15 +114,7 @@ const UpdateProfile = () => {
       );
       toast.success('Profile has been Updated Successfully.');
     } catch (err: any) {
-      if (!err?.data) {
-        toast.error('Please check Network Connection.');
-      } else if (err?.data?.status === 409) {
-        toast.error(err.data.title);
-      } else if (err?.data?.status === 400) {
-        toast.error(err.data.title);
-      } else {
-        toast.error('Something went wrong. Please try again.');
-      }
+      ErrToastHandler(err);
     }
   };
 
@@ -242,14 +236,14 @@ const UpdateProfile = () => {
                 )}
               </div>
             </div>
-            <div className='mt-6 text-end'>
-              <Button
-                type='submit'
-                className='bg-orangeColor sm:text-[14px] text-[12px]'
-                disabled={!isValid || isUpdating || isUploadingFile}
-              >
-                {isUpdating ? 'Saving...' : 'Save Profile'}
-              </Button>
+            <div className='flex justify-end'>
+              <FormButtonActions
+                isValid={isValid}
+                isLoading={isUpdating}
+                isUploadingFile={isUploadingFile}
+                loadingLabel='Saving...'
+                submitLabel='Save Profile'
+              />
             </div>
           </form>
         </div>

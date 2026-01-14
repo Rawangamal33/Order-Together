@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import { MdDelete } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { useDeleteRestaurantMutation } from '@/features/restuarants/restaurantsApi';
+import ErrToastHandler from '../Handlers/ErrToastHandler';
 
 const style = {
   position: 'absolute',
@@ -32,7 +33,7 @@ export default function DeleteRestaurantDialog({ id }: { id: string }) {
       toast.success('Restaurant Deleted Successfully.');
       handleClose();
     } catch (err) {
-      toast.error('Something Went Wrong. Please Try again.');
+      ErrToastHandler(err);
     }
   };
 

@@ -12,6 +12,7 @@ import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { emailSchema, passSchema } from '@/features/auth/schemas/auth.schema';
+import ErrToastHandler from '@/components/Handlers/ErrToastHandler';
 
 const Login = () => {
   const location = useLocation();
@@ -54,15 +55,7 @@ const Login = () => {
         navigate(from || '/', { replace: true });
       }
     } catch (err: any) {
-      if (!err?.data) {
-        toast.error('No Server Response');
-      } else if (err?.status === 401) {
-        toast.error(`${err.data?.title}`);
-      } else if (err?.status === 400) {
-        toast.error(err.data?.title);
-      } else {
-        toast.error('Login Failed. Please try again.');
-      }
+      ErrToastHandler(err);
     }
   };
 

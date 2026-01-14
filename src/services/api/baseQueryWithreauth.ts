@@ -35,9 +35,9 @@ export const baseQueryWithReauth: BaseQueryFn<
   const accessToken = (api.getState() as RootState).auth.accessToken;
   const refreshToken = (api.getState() as RootState).auth.refreshToken;
   if (result?.meta?.response?.status === 401 && accessToken) {
-    console.log('Token expired, attempting refresh...');
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
+      console.log('Token expired, attempting refresh...');
       try {
         const refreshResult = await baseQuery(
           {

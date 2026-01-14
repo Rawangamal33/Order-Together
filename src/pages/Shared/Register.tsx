@@ -13,6 +13,7 @@ import {
   passSchema,
   userNameSchema,
 } from '@/features/auth/schemas/auth.schema';
+import ErrToastHandler from '@/components/Handlers/ErrToastHandler';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -50,15 +51,7 @@ const Register = () => {
       reset();
       navigate('/login');
     } catch (err: any) {
-      if (!err?.data) {
-        toast.error('No Server Response.');
-      } else if (err?.status === 409) {
-        toast.error(`${err.data?.title}`);
-      } else if (err?.status === 400) {
-        toast.error(err.data?.title);
-      } else {
-        toast.error('Registration Failed. Please try again.');
-      }
+      ErrToastHandler(err);
     }
   };
   const togglePassVisibility = () => {
