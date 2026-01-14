@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
-import { BsFillImageFill } from 'react-icons/bs';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import z from 'zod';
 import { useDialogContext } from '@/context/DialogProvider';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -20,6 +19,7 @@ import {
 } from '@/features/restuarants/schemas/restaurants.schema';
 import ErrToastHandler from '../Handlers/ErrToastHandler';
 import FormButtonActions from '../ui/FormButtonActions';
+import FileUploadCom from '../ui/FileUploadCom';
 
 export interface EditRestaurantProps {
   id: string;
@@ -36,7 +36,6 @@ const EditRestaurant = ({ id, shortCode, isVisible }: EditRestaurantProps) => {
   const {
     uploadFile,
     isLoading: isUploadingFile,
-    isError: isFileUploadErr,
     error: fileUploadErr,
   } = useFileUpload();
   const [previewLogo, setPreviewLogo] = useState('');
@@ -75,13 +74,16 @@ const EditRestaurant = ({ id, shortCode, isVisible }: EditRestaurantProps) => {
     }
   }, [data, reset]);
 
-  const handleUploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (!selectedFile) return;
-    const url = await uploadFile(selectedFile);
-    setPreviewLogo(url);
-    reset({ ...data, logoUrl: url });
-  };
+  const handleUploadFile = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const selectedFile = e.target.files?.[0];
+      if (!selectedFile) return;
+      const url = await uploadFile(selectedFile);
+      setPreviewLogo(url);
+      reset({ ...data, logoUrl: url });
+    },
+    [uploadFile]
+  );
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -128,66 +130,32 @@ const EditRestaurant = ({ id, shortCode, isVisible }: EditRestaurantProps) => {
 
       <div className='flex justify-between items-center mt-2'>
         <label className='text-[14px] mt-2'>Logo</label>
-        <Tooltip title='Delete'>
-          <IconButton
-            size='small'
-            sx={{
-              color: '#DC2626',
-              '&:hover': {
-                background: '#fee2e2',
-              },
-            }}
-            onClick={() => {
-              setPreviewLogo('');
-              reset({ ...data, logoUrl: undefined });
-            }}
-          >
-            <MdDelete />
-          </IconButton>
-        </Tooltip>
-      </div>
-      <label
-        htmlFor='upload-image'
-        className={`w-full mx-auto h-32 flex flex-col items-center justify-center gap-2 ${
-          !previewLogo &&
-          'border-2 border-dashed rounded-md border-gray-300 bg-[#F9FAFB]'
-        }`}
-      >
-        {isUploadingFile ? (
-          <CircularProgress size={40} color='primary' />
-        ) : previewLogo ? (
-          <img
-            src={previewLogo}
-            className='max-h-24 max-w-full object-contain rounded-lg'
-            alt='Restaurant logo preview'
-          />
-        ) : (
-          <>
-            <div className='text-[23px] text-[#9CA3AF]'>
-              <BsFillImageFill />
-            </div>
-            <p className='text-xs text-[#6B7280]'>
-              Click to upload (.jpg, .png, and .webp).
-            </p>
-          </>
+        {previewLogo && (
+          <Tooltip title='Delete'>
+            <IconButton
+              size='small'
+              sx={{
+                color: '#DC2626',
+                '&:hover': {
+                  background: '#fee2e2',
+                },
+              }}
+              onClick={() => {
+                setPreviewLogo('');
+                reset({ ...data, logoUrl: undefined });
+              }}
+            >
+              <MdDelete />
+            </IconButton>
+          </Tooltip>
         )}
-      </label>
-
-      <input
-        type='file'
-        name='file'
-        id='upload-image'
-        className='hidden'
-        accept='.jpg, .png, .jpeg, .webp'
-        onChange={handleUploadFile}
+      </div>
+      <FileUploadCom
+        previewLogo={previewLogo}
+        isUploading={isUploadingFile}
+        fileUploadErr={fileUploadErr}
+        handleUploadFile={handleUploadFile}
       />
-      {isFileUploadErr && (
-        <div className='text-red-600 text-sm'>
-          {(fileUploadErr as any).data.title ||
-            'File upload failed. Please Try again.'}
-        </div>
-      )}
-
       <div className='flex items-center gap-1.5 mt-1.5'>
         <input
           type='checkbox'

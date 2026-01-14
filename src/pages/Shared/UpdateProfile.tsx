@@ -1,6 +1,5 @@
 import type { AppDispatch } from '@/app/store';
 import ErrToastHandler from '@/components/Handlers/ErrToastHandler';
-import { Button } from '@/components/ui/button';
 import ErrorPage from '@/components/ui/ErrorPage';
 import FormButtonActions from '@/components/ui/FormButtonActions';
 import { updateUser } from '@/features/auth/authSlice';
@@ -164,27 +163,29 @@ const UpdateProfile = () => {
                 type='file'
                 id='avatar'
                 className='hidden'
-                accept='.pdf, .jpg , .jpeg , .png'
+                accept='.jpg, .png, .jpeg, .webp'
                 onChange={handleUploadFile}
               />
             </div>
-            <Tooltip title='Delete'>
-              <IconButton
-                size='small'
-                sx={{
-                  color: '#DC2626',
-                  '&:hover': {
-                    background: '#fee2e2',
-                  },
-                }}
-                onClick={() => {
-                  setPreviewImg('');
-                  reset({ ...userData, avatarUrl: undefined });
-                }}
-              >
-                <MdDelete />
-              </IconButton>
-            </Tooltip>
+            {previewImg && (
+              <Tooltip title='Delete'>
+                <IconButton
+                  size='small'
+                  sx={{
+                    color: '#DC2626',
+                    '&:hover': {
+                      background: '#fee2e2',
+                    },
+                  }}
+                  onClick={() => {
+                    setPreviewImg('');
+                    reset({ ...userData, avatarUrl: undefined });
+                  }}
+                >
+                  <MdDelete />
+                </IconButton>
+              </Tooltip>
+            )}
           </div>
           {isErrUploadingFile && (
             <div className='text-red-600 text-sm mt-3'>
