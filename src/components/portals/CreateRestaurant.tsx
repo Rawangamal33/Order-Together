@@ -10,7 +10,7 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import { MdDelete } from 'react-icons/md';
 import { restaurantNameSchema } from '@/features/restuarants/schemas/restaurants.schema';
-import ErrToastHandler from '../Handlers/ErrToastHandler';
+import ErrToastHandler from '../ErrorHandlers/ErrToastHandler';
 import FormButtonActions from '../ui/FormButtonActions';
 import FileUploadCom from '../ui/FileUploadCom';
 

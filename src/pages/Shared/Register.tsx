@@ -13,7 +13,7 @@ import {
   passSchema,
   userNameSchema,
 } from '@/features/auth/schemas/auth.schema';
-import ErrToastHandler from '@/components/Handlers/ErrToastHandler';
+import ErrToastHandler from '@/components/ErrorHandlers/ErrToastHandler';
 
 const Register = () => {
   const navigate = useNavigate();

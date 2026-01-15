@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { MdDelete } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { useDeleteRestaurantMutation } from '@/features/restuarants/restaurantsApi';
-import ErrToastHandler from '../Handlers/ErrToastHandler';
+import ErrToastHandler from '../ErrorHandlers/ErrToastHandler';
 
 const style = {
   position: 'absolute',

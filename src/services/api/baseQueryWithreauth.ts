@@ -37,7 +37,6 @@ export const baseQueryWithReauth: BaseQueryFn<
   if (result?.meta?.response?.status === 401 && accessToken) {
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
-      console.log('Token expired, attempting refresh...');
       try {
         const refreshResult = await baseQuery(
           {
@@ -52,14 +51,12 @@ export const baseQueryWithReauth: BaseQueryFn<
         );
 
         if (refreshResult?.data) {
-          console.log('Token refreshed successfully');
           const returnedResult = refreshResult.data as RefreshResponse;
 
           api.dispatch(setCredentials(returnedResult));
 
           result = await baseQuery(args, api, extraOptions);
         } else {
-          console.log('Refresh failed, logging out');
           toast.error('Session expired. Please login again.');
           await baseQuery(
             {

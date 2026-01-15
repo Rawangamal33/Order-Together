@@ -17,7 +17,7 @@ import {
   logoUrlSchema,
   restaurantNameSchema,
 } from '@/features/restuarants/schemas/restaurants.schema';
-import ErrToastHandler from '../Handlers/ErrToastHandler';
+import ErrToastHandler from '../ErrorHandlers/ErrToastHandler';
 import FormButtonActions from '../ui/FormButtonActions';
 import FileUploadCom from '../ui/FileUploadCom';
 

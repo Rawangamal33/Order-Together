@@ -1,6 +1,5 @@
 import type { AppDispatch } from '@/app/store';
-import ErrToastHandler from '@/components/Handlers/ErrToastHandler';
-import ErrorPage from '@/components/ui/ErrorPage';
+import ErrToastHandler from '@/components/ErrorHandlers/ErrToastHandler';
 import FormButtonActions from '@/components/ui/FormButtonActions';
 import { updateUser } from '@/features/auth/authSlice';
 import { userNameSchema } from '@/features/auth/schemas/auth.schema';
@@ -16,6 +15,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { useEffect, useMemo, useState } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { useForm } from 'react-hook-form';
 import { MdDelete } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
@@ -29,6 +29,7 @@ const UpdateProfile = () => {
     isError,
     error,
   } = useGetProfileQuery();
+  const { showBoundary } = useErrorBoundary();
   const dispatch = useDispatch<AppDispatch>();
   const {
     uploadFile,
@@ -72,14 +73,17 @@ const UpdateProfile = () => {
     }
   }, [userData, reset]);
 
-  if (!isLoadingInitialData && isError) {
-    return (
-      <ErrorPage
-        status={(error as any)?.status}
-        message={(error as any)?.data?.title}
-      />
-    );
-  }
+  useEffect(() => {
+    if (!isLoadingInitialData && isError) {
+      const errorMessage =
+        (error as any)?.data?.title ||
+        (error as any)?.data?.message ||
+        'Failed to load profile';
+      const errorObj = Object.assign(new Error(errorMessage), error);
+
+      showBoundary(errorObj);
+    }
+  }, [isError, error, showBoundary]);
 
   if (isLoadingInitialData) {
     return (

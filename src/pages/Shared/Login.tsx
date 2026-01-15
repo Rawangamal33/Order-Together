@@ -12,7 +12,7 @@ import z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { emailSchema, passSchema } from '@/features/auth/schemas/auth.schema';
-import ErrToastHandler from '@/components/Handlers/ErrToastHandler';
+import ErrToastHandler from '@/components/ErrorHandlers/ErrToastHandler';
 
 const Login = () => {
   const location = useLocation();

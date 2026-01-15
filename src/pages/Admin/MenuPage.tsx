@@ -3,7 +3,6 @@ import MenuTable from '@/components/Admin/MenuTable';
 import DialogTrigger from '@/components/Dialogs/DialogTrigger';
 import AddMenuItem from '@/components/portals/AddMenuItem';
 import { Button } from '@/components/ui/button';
-import ErrorPage from '@/components/ui/ErrorPage';
 import { WithDialogContext } from '@/context/DialogProvider';
 import { useGetMenuItemsQuery } from '@/features/menuItems/menuItemsApi';
 import type { MenuItem } from '@/features/menuItems/types/menuItems.types';
@@ -11,6 +10,8 @@ import { getInitials } from '@/lib/ImgPlaceholder-utils';
 import CircularProgress from '@mui/material/CircularProgress';
 import { FaPlus } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 
 const MenuPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +23,19 @@ const MenuPage = () => {
     );
   }
   const { data, isLoading, isError, error } = useGetMenuItemsQuery(id);
+  const { showBoundary } = useErrorBoundary();
+
+  useEffect(() => {
+    if (!isLoading && isError) {
+      const errorMessage =
+        (error as any)?.data?.title ||
+        (error as any)?.data?.message ||
+        'Failed to load Menu Page';
+      const errorObj = Object.assign(new Error(errorMessage), error);
+
+      showBoundary(errorObj);
+    }
+  }, [isError, error, showBoundary]);
 
   if (isLoading) {
     return (
@@ -30,14 +44,7 @@ const MenuPage = () => {
       </div>
     );
   }
-  if (!isLoading && isError) {
-    return (
-      <ErrorPage
-        status={(error as any)?.status}
-        message={(error as any)?.data?.title}
-      />
-    );
-  }
+
   if (!data) return undefined;
   return (
     <section className='pt-24 min-h-screen px-6 pb-7 bg-[#F9FAFB]'>

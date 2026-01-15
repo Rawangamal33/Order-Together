@@ -5,7 +5,7 @@ import GlobalTable from '../Tables/GlobalTable';
 import RestaurantName from './RestaurantName';
 import type { ReactNode } from 'react';
 import EmptyDataTable from '../Tables/EmptyDataTable';
-import ErrorScope from '../ui/ErrorScope';
+import ErrorScope from '../ErrorHandlers/ErrorScope';
 import CreateRestaurant from '../portals/CreateRestaurant';
 
 export interface RestauranrTableProps {

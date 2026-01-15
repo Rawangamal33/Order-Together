@@ -7,7 +7,7 @@ import { FaRegEyeSlash } from 'react-icons/fa';
 import Button from '@mui/material/Button';
 import { useUpdateMenuItemVisibilityMutation } from '@/features/menuItems/menuItemsApi';
 import { toast } from 'react-toastify';
-import ErrToastHandler from '../Handlers/ErrToastHandler';
+import ErrToastHandler from '../ErrorHandlers/ErrToastHandler';
 
 const style = {
   position: 'absolute',

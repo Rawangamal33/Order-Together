@@ -10,7 +10,7 @@ import {
   menuNameSchema,
   priceMenuSchema,
 } from '@/features/menuItems/schemas/menuItems.schema';
-import ErrToastHandler from '../Handlers/ErrToastHandler';
+import ErrToastHandler from '../ErrorHandlers/ErrToastHandler';
 import FormButtonActions from '../ui/FormButtonActions';
 
 const AddMenuItem = ({ id }: { id: string }) => {

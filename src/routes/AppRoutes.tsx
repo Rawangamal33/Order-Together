@@ -11,6 +11,8 @@ import Login from '@/pages/Shared/Login';
 import Register from '@/pages/Shared/Register';
 import MenuPage from '@/pages/Admin/MenuPage';
 import MainLayout from '@/components/layouts/MainLayout';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorBoundaryFallback from '@/components/ErrorHandlers/ErrorBoundaryFallback';
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -62,9 +64,11 @@ const AppRoutes = () => {
             <Route
               path='profile'
               element={
-                <AnimationRouting>
-                  <UpdateProfile />
-                </AnimationRouting>
+                <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+                  <AnimationRouting>
+                    <UpdateProfile />
+                  </AnimationRouting>
+                </ErrorBoundary>
               }
             />
           </Route>
@@ -72,9 +76,11 @@ const AppRoutes = () => {
             <Route
               path='admin/restaurants'
               element={
-                <AnimationRouting>
-                  <Dashboard />
-                </AnimationRouting>
+                <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+                  <AnimationRouting>
+                    <Dashboard />
+                  </AnimationRouting>
+                </ErrorBoundary>
               }
             />
           </Route>
@@ -82,9 +88,11 @@ const AppRoutes = () => {
             <Route
               path={`admin/restaurants/:id/menu-items`}
               element={
-                <AnimationRouting>
-                  <MenuPage />
-                </AnimationRouting>
+                <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+                  <AnimationRouting>
+                    <MenuPage />
+                  </AnimationRouting>
+                </ErrorBoundary>
               }
             />
           </Route>
